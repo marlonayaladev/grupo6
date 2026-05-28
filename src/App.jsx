@@ -10,7 +10,7 @@ function buildDefaultFilters() {
   for (const cat of categories) {
     f[cat.id] = {};
     for (const item of cat.items) {
-      f[cat.id][item.id] = !cat.defaultExcluded?.includes(item.id);
+      f[cat.id][item.id] = false;
     }
   }
   return f;
@@ -43,21 +43,29 @@ function App() {
   }, []);
 
   const handleRecommendSelection = useCallback(() => {
-    setFilters((prev) => {
-      const next = { ...prev, tn: {} };
-      const tnCat = categories.find((c) => c.id === 'tn');
-
-      for (const item of tnCat.items) {
-        next.tn[item.id] = false;
+    setFilters(() => {
+      const next = {};
+      for (const cat of categories) {
+        next[cat.id] = {};
+        for (const item of cat.items) {
+          next[cat.id][item.id] = false;
+        }
       }
 
       const mtCat = categories.find((c) => c.id === 'mt');
       for (const item of mtCat.items) {
-        if (prev.mt[item.id]) {
+        next.mt[item.id] = true;
+      }
+
+      for (const item of mtCat.items) {
+        if (next.mt[item.id]) {
           const connections = relationMatrix[item.id] || [];
           for (const connId of connections) {
-            if (connId.startsWith('TN')) {
-              next.tn[connId] = true;
+            for (const cat of categories) {
+              if (cat.items.some((i) => i.id === connId)) {
+                next[cat.id][connId] = true;
+                break;
+              }
             }
           }
         }

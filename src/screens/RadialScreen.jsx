@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import RadialChart from '../components/RadialChart';
 import MatrixModal from '../components/MatrixModal';
 import { amenazasCaracterizadas } from '../data';
@@ -6,6 +7,14 @@ import { amenazasCaracterizadas } from '../data';
 export default function RadialScreen({ filters, onBack }) {
   const [showMatrix, setShowMatrix] = useState(false);
   const [activeAmenaza, setActiveAmenaza] = useState(null);
+  const [revealed, setRevealed] = useState(new Set());
+
+  const handleActiveChange = useCallback((idx) => {
+    setActiveAmenaza(idx);
+    if (idx !== null) {
+      setRevealed((prev) => new Set([...prev, idx]));
+    }
+  }, []);
 
   return (
     <div className="h-screen flex flex-col bg-dash-bg">
@@ -14,7 +23,7 @@ export default function RadialScreen({ filters, onBack }) {
           <RadialChart
             filters={filters}
             activeAmenaza={activeAmenaza}
-            onActiveChange={setActiveAmenaza}
+            onActiveChange={handleActiveChange}
           />
         </div>
 
@@ -24,46 +33,52 @@ export default function RadialScreen({ filters, onBack }) {
           </h3>
 
           <div className="space-y-4">
-            {amenazasCaracterizadas.map((am, idx) => {
-              const isActive = activeAmenaza === idx;
+            <AnimatePresence>
+              {amenazasCaracterizadas.map((am, idx) => {
+                if (!revealed.has(idx)) return null;
+                const isActive = activeAmenaza === idx;
 
-              return (
-                <div
-                  key={am.id}
-                  className={`rounded-xl border-2 p-4 transition-all duration-700 ${
-                    isActive
-                      ? 'border-[#f4a261] bg-[#f4a261]/10 shadow-lg shadow-[#f4a261]/20'
-                      : 'border-dash-border bg-dash-surface/30'
-                  }`}
-                >
-                  <div className="flex items-start gap-3">
-                    <span className={`text-sm font-bold shrink-0 mt-0.5 ${
-                      isActive ? 'text-[#f4a261]' : 'text-dash-muted'
-                    }`}>
-                      {String(am.id).padStart(2, '0')}
-                    </span>
-                    <div className="min-w-0">
-                      <p className={`text-sm font-medium leading-snug transition-colors duration-700 ${
-                        isActive ? 'text-white' : 'text-dash-text/80'
+                return (
+                  <motion.div
+                    key={am.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, ease: 'easeOut' }}
+                    className={`rounded-xl border-2 p-4 transition-all duration-700 ${
+                      isActive
+                        ? 'border-[#f4a261] bg-[#f4a261]/10 shadow-lg shadow-[#f4a261]/20'
+                        : 'border-dash-border bg-dash-surface/30'
+                    }`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className={`text-sm font-bold shrink-0 mt-0.5 ${
+                        isActive ? 'text-[#f4a261]' : 'text-dash-muted'
                       }`}>
-                        {am.nombre}
-                      </p>
-                      <div className="mt-2 flex flex-wrap gap-1.5">
-                        {am.path.map((pid) => (
-                          <span key={pid} className={`text-[10px] px-2 py-0.5 rounded-full border transition-all duration-700 ${
-                            isActive
-                              ? 'border-[#f4a261]/50 text-[#f4a261] bg-[#f4a261]/15'
-                              : 'border-dash-border/50 text-dash-muted bg-white/5'
-                          }`}>
-                            {pid}
-                          </span>
-                        ))}
+                        {String(am.id).padStart(2, '0')}
+                      </span>
+                      <div className="min-w-0">
+                        <p className={`text-sm font-medium leading-snug transition-colors duration-700 ${
+                          isActive ? 'text-white' : 'text-dash-text/80'
+                        }`}>
+                          {am.nombre}
+                        </p>
+                        <div className="mt-2 flex flex-wrap gap-1.5">
+                          {am.path.map((pid) => (
+                            <span key={pid} className={`text-[10px] px-2 py-0.5 rounded-full border transition-all duration-700 ${
+                              isActive
+                                ? 'border-[#f4a261]/50 text-[#f4a261] bg-[#f4a261]/15'
+                                : 'border-dash-border/50 text-dash-muted bg-white/5'
+                            }`}>
+                              {pid}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })}
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
           </div>
 
           <button

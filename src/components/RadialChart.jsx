@@ -5,8 +5,8 @@ const CX = 400;
 const CY = 400;
 const PLANET_R = 13;
 const ALIGN_ANGLE = 270;
-const ALIGN_DURATION = 2000;
-const HOLD_DURATION = 3500;
+const ALIGN_DURATION = 600;
+const HOLD_DURATION = 1200;
 
 const amenazaPaths = amenazasCaracterizadas.map((a) => a.path);
 
@@ -55,12 +55,12 @@ export default function RadialChart({ filters, onActiveChange }) {
       const m = modeRef.current;
 
       if (m === 'normal') {
-        const newRots = rotationSpeeds.map((sp) => ((elapsed * 360) / sp) % 360);
+        const newRots = rotationSpeeds.map((sp) => ((elapsed * 720) / sp) % 360);
         degs.current = newRots;
         setRots(newRots);
 
         const phaseElapsed = now - phaseStart.current;
-        if (phaseElapsed > 6000) {
+        if (phaseElapsed > 2000) {
           const amIdx = amenazaRef.current;
           const path = amenazaPaths[amIdx];
           if (path) {
