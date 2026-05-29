@@ -12,29 +12,7 @@ function buildDefaultFilters() {
   for (const cat of categories) {
     f[cat.id] = {};
     for (const item of cat.items) {
-      const idNum = parseInt(item.id.replace(/\D/g, ''), 10);
-      switch (cat.id) {
-        case 'mt':
-          f[cat.id][item.id] = idNum <= 8;
-          break;
-        case 'tn':
-          f[cat.id][item.id] = idNum <= 9;
-          break;
-        case 'tin':
-          f[cat.id][item.id] = idNum <= 9;
-          break;
-        case 'ts':
-          f[cat.id][item.id] = idNum <= 7;
-          break;
-        case 'r':
-          f[cat.id][item.id] = idNum <= 5;
-          break;
-        case 'a':
-          f[cat.id][item.id] = idNum <= 5;
-          break;
-        default:
-          f[cat.id][item.id] = false;
-      }
+      f[cat.id][item.id] = false;
     }
   }
   return f;
@@ -73,29 +51,31 @@ function App() {
       for (const cat of categories) {
         next[cat.id] = {};
         for (const item of cat.items) {
-          next[cat.id][item.id] = false;
-        }
-      }
-
-      const mtCat = categories.find((c) => c.id === 'mt');
-      for (const item of mtCat.items) {
-        next.mt[item.id] = true;
-      }
-
-      for (const item of mtCat.items) {
-        if (next.mt[item.id]) {
-          const connections = relationMatrix[item.id] || [];
-          for (const connId of connections) {
-            for (const cat of categories) {
-              if (cat.items.some((i) => i.id === connId)) {
-                next[cat.id][connId] = true;
-                break;
-              }
-            }
+          const idNum = parseInt(item.id.replace(/\D/g, ''), 10);
+          switch (cat.id) {
+            case 'mt':
+              next[cat.id][item.id] = idNum <= 8;
+              break;
+            case 'tn':
+              next[cat.id][item.id] = idNum <= 9;
+              break;
+            case 'tin':
+              next[cat.id][item.id] = idNum <= 9;
+              break;
+            case 'ts':
+              next[cat.id][item.id] = idNum <= 7;
+              break;
+            case 'r':
+              next[cat.id][item.id] = idNum <= 5;
+              break;
+            case 'a':
+              next[cat.id][item.id] = idNum <= 5;
+              break;
+            default:
+              next[cat.id][item.id] = false;
           }
         }
       }
-
       return next;
     });
   }, []);

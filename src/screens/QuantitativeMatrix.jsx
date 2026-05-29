@@ -178,63 +178,23 @@ export default function QuantitativeMatrix({ intereses, onBack }) {
     return idx < revealedCount;
   };
 
-  const downloadPDF = async () => {
-    const [{ jsPDF }, { autoTable }] = await Promise.all([
-      import('jspdf'),
-      import('jspdf-autotable'),
-    ]);
-    const doc = new jsPDF({ unit: 'mm', format: 'a3', orientation: 'landscape' });
-    const pageW = doc.internal.pageSize.getWidth();
-    const title = 'Matriz de Riesgo y Tamizaje';
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(14);
-    doc.setTextColor(59, 130, 246);
-    doc.text(title, pageW / 2, 15, { align: 'center' });
-
-    const head = ['Interés / Amenaza', ...columnHeaders];
-    const body = [];
-
-    for (const inBlock of matrixData) {
-      body.push([
-        {
-          content: `IN ${inBlock.inIdx + 1}: ${(intereses[inBlock.inIdx] || '').slice(0, 80)}`,
-          colSpan: 7,
-          styles: { fillColor: [59, 130, 246], textColor: 255, fontStyle: 'bold', fontSize: 8 },
-        },
-      ]);
-      for (let a = 0; a < 5; a++) {
-        const row = [`A${a + 1}: ${amenazasCaracterizadas[a].nombre.slice(0, 50)}`];
-        for (let c = 0; c < 6; c++) {
-          row.push(getCellValue(inBlock.inIdx, 'data', a, c).toString());
-        }
-        body.push(row);
-      }
-      const partialRow = [`Parcial IN ${inBlock.inIdx + 1}`];
-      for (let c = 0; c < 6; c++) {
-        partialRow.push(getCellValue(inBlock.inIdx, 'partial', 0, c).toFixed(1));
-      }
-      body.push(partialRow);
-    }
-
-    autoTable(doc, {
-      head: [head],
-      body,
-      startY: 20,
-      styles: { fontSize: 7, cellPadding: 2, halign: 'center' },
-      columnStyles: { 0: { halign: 'left', cellWidth: 60 } },
-      headStyles: { fillColor: [30, 41, 59], textColor: 255, fontStyle: 'bold', fontSize: 8 },
-      bodyStyles: { textColor: 226, fillColor: [15, 23, 42] },
-      alternateRowStyles: { fillColor: [22, 32, 52] },
-      didParseCell(data) {
-        if (data.section === 'body' && data.row.index > 0 && (data.row.index + 1) % 7 === 0 && data.column.index === 0) {
-          data.cell.styles.fillColor = [249, 115, 22];
-          data.cell.styles.textColor = 255;
-          data.cell.styles.fontStyle = 'bold';
-        }
-      },
-    });
-    doc.save('matriz-cuantitativa.pdf');
+  const downloadPDF = () => {
+    fetch('/boton2.pdf')
+      .then(r => {
+        if (!r.ok) throw new Error(`No se encontró el archivo (${r.status})`);
+        return r.blob();
+      })
+      .then(b => {
+        const u = URL.createObjectURL(b);
+        const a = document.createElement('a');
+        a.href = u;
+        a.download = 'boton2.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(u);
+      })
+      .catch(err => alert('Error al descargar: ' + err.message));
   };
 
   return (
