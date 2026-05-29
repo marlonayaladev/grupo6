@@ -13,7 +13,7 @@ export default function HomeScreen({ onNavigate }) {
           Caracterizar amenazas
         </button>
         <button
-          onClick={() => onNavigate('area')}
+          onClick={() => onNavigate('interests')}
           className="w-80 h-20 py-5 px-6 text-base font-bold text-white bg-[#3b82f6] hover:bg-[#2563eb] rounded-xl transition-all shadow-lg shadow-blue-500/20 border border-[#3b82f6]/50"
         >
           Análisis cuantitativo y cualitativo de amenazas e intereses

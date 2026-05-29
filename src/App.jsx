@@ -3,6 +3,8 @@ import HomeScreen from './screens/HomeScreen';
 import AreaScreen from './screens/AreaScreen';
 import FilterScreen from './screens/FilterScreen';
 import RadialScreen from './screens/RadialScreen';
+import InterestSelection from './screens/InterestSelection';
+import QuantitativeMatrix from './screens/QuantitativeMatrix';
 import { categories, relationMatrix } from './data';
 
 function buildDefaultFilters() {
@@ -20,6 +22,7 @@ function App() {
   const [screen, setScreen] = useState('home');
   const [filters, setFilters] = useState(buildDefaultFilters);
   const [areaCritica, setAreaCritica] = useState('');
+  const [intereses, setIntereses] = useState([]);
 
   const handleToggleItem = useCallback((catId, itemId) => {
     setFilters((prev) => ({
@@ -79,9 +82,23 @@ function App() {
     setScreen('radial');
   }, []);
 
+  const handleGenerateMatrix = useCallback((texts) => {
+    setIntereses(texts);
+    setScreen('quantitative-matrix');
+  }, []);
+
   return (
     <>
-      {screen === 'home' && <HomeScreen onNavigate={setScreen} />}
+      {screen === 'home' && (
+        <HomeScreen
+          onNavigate={(s) => {
+            if (s === 'interests') {
+              setIntereses([]);
+            }
+            setScreen(s);
+          }}
+        />
+      )}
       {screen === 'area' && (
         <AreaScreen onNavigate={setScreen} onAreaSelect={setAreaCritica} />
       )}
@@ -98,6 +115,18 @@ function App() {
       )}
       {screen === 'radial' && (
         <RadialScreen filters={filters} onBack={() => setScreen('filters')} />
+      )}
+      {screen === 'interests' && (
+        <InterestSelection
+          onGenerateMatrix={handleGenerateMatrix}
+          onBack={() => setScreen('home')}
+        />
+      )}
+      {screen === 'quantitative-matrix' && (
+        <QuantitativeMatrix
+          intereses={intereses}
+          onBack={() => setScreen('interests')}
+        />
       )}
     </>
   );

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import RadialChart from '../components/RadialChart';
 import MatrixModal from '../components/MatrixModal';
@@ -8,11 +8,23 @@ export default function RadialScreen({ filters, onBack }) {
   const [showMatrix, setShowMatrix] = useState(false);
   const [activeAmenaza, setActiveAmenaza] = useState(null);
   const [revealed, setRevealed] = useState(new Set());
+  const [chartDone, setChartDone] = useState(false);
+
+  const allRevealed = revealed.size >= amenazasCaracterizadas.length;
 
   const handleActiveChange = useCallback((idx) => {
-    setActiveAmenaza(idx);
     if (idx !== null) {
-      setRevealed((prev) => new Set([...prev, idx]));
+      setActiveAmenaza(idx);
+      setRevealed((prev) => {
+        const next = new Set(prev);
+        next.add(idx);
+        if (next.size >= amenazasCaracterizadas.length) {
+          setTimeout(() => setChartDone(true), 1500);
+        }
+        return next;
+      });
+    } else {
+      setActiveAmenaza(null);
     }
   }, []);
 
@@ -33,6 +45,17 @@ export default function RadialScreen({ filters, onBack }) {
           </h3>
 
           <div className="space-y-4">
+            {!allRevealed && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex flex-col items-center justify-center py-12 text-dash-muted"
+              >
+                <div className="w-8 h-8 border-2 border-[#f97316] border-t-transparent rounded-full animate-spin mb-3" />
+                <p className="text-sm">Caracterizando amenazas...</p>
+              </motion.div>
+            )}
+
             <AnimatePresence>
               {amenazasCaracterizadas.map((am, idx) => {
                 if (!revealed.has(idx)) return null;
@@ -83,7 +106,12 @@ export default function RadialScreen({ filters, onBack }) {
 
           <button
             onClick={() => setShowMatrix(true)}
-            className="w-full mt-8 py-4 text-base font-bold uppercase tracking-wider bg-[#3b82f6] text-white border-2 border-[#2563eb] rounded-xl hover:bg-[#2563eb] transition-all shadow-lg shadow-blue-500/20"
+            disabled={!allRevealed}
+            className={`w-full mt-8 py-4 text-base font-bold uppercase tracking-wider rounded-xl border-2 transition-all ${
+              allRevealed
+                ? 'bg-[#3b82f6] text-white border-[#2563eb] hover:bg-[#2563eb] shadow-lg shadow-blue-500/20 cursor-pointer'
+                : 'bg-dash-bg text-dash-muted/40 border-dash-border cursor-not-allowed'
+            }`}
           >
             GENERAR MATRIZ
           </button>

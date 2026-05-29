@@ -6,9 +6,10 @@ const CY = 400;
 const PLANET_R = 13;
 const ALIGN_ANGLE = 270;
 const ALIGN_DURATION = 600;
-const HOLD_DURATION = 1200;
+const HOLD_DURATION = 1500;
 
 const amenazaPaths = amenazasCaracterizadas.map((a) => a.path);
+const TOTAL_AMENAZAS = amenazaPaths.length;
 
 const ringInfo = {};
 for (const cat of categories) {
@@ -45,12 +46,15 @@ export default function RadialChart({ filters, onActiveChange }) {
   const fromRots = useRef([0, 0, 0, 0, 0, 0]);
   const targetRots = useRef([0, 0, 0, 0, 0, 0]);
   const phaseStart = useRef(0);
+  const doneRef = useRef(false);
 
   useEffect(() => {
     const start = performance.now();
     let frame;
 
     const tick = (now) => {
+      if (doneRef.current) return;
+
       const elapsed = (now - start) / 1000;
       const m = modeRef.current;
 
@@ -62,6 +66,11 @@ export default function RadialChart({ filters, onActiveChange }) {
         const phaseElapsed = now - phaseStart.current;
         if (phaseElapsed > 2000) {
           const amIdx = amenazaRef.current;
+          if (amIdx >= TOTAL_AMENAZAS) {
+            doneRef.current = true;
+            onActiveChange?.(null);
+            return;
+          }
           const path = amenazaPaths[amIdx];
           if (path) {
             fromRots.current = [...newRots];
@@ -95,12 +104,12 @@ export default function RadialChart({ filters, onActiveChange }) {
           }
           setBeamPlanets(beam);
           phaseStart.current = now;
-            modeRef.current = 'aligned';
+          modeRef.current = 'aligned';
         }
       } else if (m === 'aligned') {
         if (now - phaseStart.current > HOLD_DURATION) {
           setBeamPlanets([]);
-          amenazaRef.current = (amenazaRef.current + 1) % amenazaPaths.length;
+          amenazaRef.current = amenazaRef.current + 1;
           phaseStart.current = now;
           modeRef.current = 'normal';
           onActiveChange?.(null);
@@ -115,9 +124,7 @@ export default function RadialChart({ filters, onActiveChange }) {
     return () => cancelAnimationFrame(frame);
   }, [onActiveChange]);
 
-  const hoveredRef = useRef(null);
   const [hovered, setHovered] = useState(null);
-  useEffect(() => { hoveredRef.current = hovered; }, [hovered]);
 
   const beamPolygon = beamPlanets.length > 0
     ? [0, 0, ...beamPlanets.flatMap((p) => [p.x - CX, p.y - CY])]
