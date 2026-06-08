@@ -1,137 +1,76 @@
-import { useState, useCallback } from 'react';
-import HomeScreen from './screens/HomeScreen';
-import AreaScreen from './screens/AreaScreen';
-import FilterScreen from './screens/FilterScreen';
-import RadialScreen from './screens/RadialScreen';
-import InterestSelection from './screens/InterestSelection';
-import QuantitativeMatrix from './screens/QuantitativeMatrix';
-import { categories, relationMatrix } from './data';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import MainLayout from './components/MainLayout';
+import LandingPage from './pages/LandingPage';
+import GenerarSituacionPage from './pages/GenerarSituacionPage';
+import SimulacionPage from './pages/SimulacionPage';
+import HistorialPage from './pages/HistorialPage';
+import BibliotecaPage from './pages/BibliotecaPage';
+import LoginPage from './pages/LoginPage';
 
-function buildDefaultFilters() {
-  const f = {};
-  for (const cat of categories) {
-    f[cat.id] = {};
-    for (const item of cat.items) {
-      f[cat.id][item.id] = false;
-    }
-  }
-  return f;
+function PrivateRoute({ children }) {
+  const isAuth = localStorage.getItem('isAuthenticated') === 'true';
+  return isAuth ? <MainLayout>{children}</MainLayout> : <Navigate to="/login" replace />;
 }
 
-function App() {
-  const [screen, setScreen] = useState('home');
-  const [filters, setFilters] = useState(buildDefaultFilters);
-  const [areaCritica, setAreaCritica] = useState('');
-  const [intereses, setIntereses] = useState([]);
+function PublicRoute({ children }) {
+  const isAuth = localStorage.getItem('isAuthenticated') === 'true';
+  return isAuth ? <Navigate to="/" replace /> : children;
+}
 
-  const handleToggleItem = useCallback((catId, itemId) => {
-    setFilters((prev) => ({
-      ...prev,
-      [catId]: {
-        ...prev[catId],
-        [itemId]: !prev[catId][itemId],
-      },
-    }));
-  }, []);
-
-  const handleSelectAll = useCallback((catId, value) => {
-    setFilters((prev) => {
-      const cat = categories.find((c) => c.id === catId);
-      const next = { ...prev, [catId]: {} };
-      for (const item of cat.items) {
-        next[catId][item.id] = value;
-      }
-      return next;
-    });
-  }, []);
-
-  const handleRecommendSelection = useCallback(() => {
-    setFilters(() => {
-      const next = {};
-      for (const cat of categories) {
-        next[cat.id] = {};
-        for (const item of cat.items) {
-          const idNum = parseInt(item.id.replace(/\D/g, ''), 10);
-          switch (cat.id) {
-            case 'mt':
-              next[cat.id][item.id] = idNum <= 8;
-              break;
-            case 'tn':
-              next[cat.id][item.id] = idNum <= 9;
-              break;
-            case 'tin':
-              next[cat.id][item.id] = idNum <= 9;
-              break;
-            case 'ts':
-              next[cat.id][item.id] = idNum <= 7;
-              break;
-            case 'r':
-              next[cat.id][item.id] = idNum <= 5;
-              break;
-            case 'a':
-              next[cat.id][item.id] = idNum <= 5;
-              break;
-            default:
-              next[cat.id][item.id] = false;
-          }
-        }
-      }
-      return next;
-    });
-  }, []);
-
-  const handleGenerateRadial = useCallback(() => {
-    setScreen('radial');
-  }, []);
-
-  const handleGenerateMatrix = useCallback((texts) => {
-    setIntereses(texts);
-    setScreen('quantitative-matrix');
-  }, []);
-
+export default function App() {
   return (
-    <>
-      {screen === 'home' && (
-        <HomeScreen
-          onNavigate={(s) => {
-            if (s === 'interests') {
-              setIntereses([]);
-            }
-            setScreen(s);
-          }}
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
+          }
         />
-      )}
-      {screen === 'area' && (
-        <AreaScreen onNavigate={setScreen} onAreaSelect={setAreaCritica} />
-      )}
-      {screen === 'filters' && (
-        <FilterScreen
-          filters={filters}
-          onToggleItem={handleToggleItem}
-          onSelectAll={handleSelectAll}
-          onRecommendSelection={handleRecommendSelection}
-          onGenerateRadial={handleGenerateRadial}
-          onBack={() => setScreen('area')}
-          areaCritica={areaCritica}
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <LandingPage />
+            </PrivateRoute>
+          }
         />
-      )}
-      {screen === 'radial' && (
-        <RadialScreen filters={filters} onBack={() => setScreen('home')} />
-      )}
-      {screen === 'interests' && (
-        <InterestSelection
-          onGenerateMatrix={handleGenerateMatrix}
-          onBack={() => setScreen('home')}
+        <Route
+          path="/generar"
+          element={
+            <PrivateRoute>
+              <GenerarSituacionPage />
+            </PrivateRoute>
+          }
         />
-      )}
-      {screen === 'quantitative-matrix' && (
-        <QuantitativeMatrix
-          intereses={intereses}
-          onBack={() => setScreen('home')}
+        <Route
+          path="/simulacion/:id"
+          element={
+            <PrivateRoute>
+              <SimulacionPage />
+            </PrivateRoute>
+          }
         />
-      )}
-    </>
+        <Route
+          path="/historial"
+          element={
+            <PrivateRoute>
+              <HistorialPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/biblioteca"
+          element={
+            <PrivateRoute>
+              <BibliotecaPage />
+            </PrivateRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;

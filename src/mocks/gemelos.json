@@ -1,0 +1,110 @@
+[
+  {
+    "id": "RENIEC",
+    "nombre": "RENIEC — Registro Nacional de Identificación",
+    "descripcion": "Sistema central de identidad digital de 34 millones de ciudadanos. Contiene datos biométricos, DNI, y registros de nacimiento/defunción.",
+    "poblacion": 34000000,
+    "impacto_s_hora": 2800000,
+    "nivel_criticidad": 5,
+    "categoria": "Identidad"
+  },
+  {
+    "id": "ONPE",
+    "nombre": "ONPE — Oficina Nacional de Procesos Electorales",
+    "descripcion": "Infraestructura electoral nacional: bases de datos de votantes, sistemas de transmisión de resultados, y cabinas de votación electrónica.",
+    "poblacion": 25000000,
+    "impacto_s_hora": 1500000,
+    "nivel_criticidad": 5,
+    "categoria": "Gobernanza"
+  },
+  {
+    "id": "SIAF",
+    "nombre": "SIAF — Sistema Integrado de Administración Financiera",
+    "descripcion": "Plataforma que gestiona el presupuesto público, pagos, contabilidad y deuda del Estado. Procesa S/ 200 mil millones anuales.",
+    "poblacion": 33000000,
+    "impacto_s_hora": 5600000,
+    "nivel_criticidad": 5,
+    "categoria": "Finanzas"
+  },
+  {
+    "id": "SUNAT",
+    "nombre": "SUNAT — Superintendencia Nacional de Aduanas",
+    "descripcion": "Control del comercio exterior, recaudación de impuestos y fiscalización aduanera. Maneja el 78% de la recaudación tributaria.",
+    "poblacion": 33000000,
+    "impacto_s_hora": 4200000,
+    "nivel_criticidad": 5,
+    "categoria": "Tributaria"
+  },
+  {
+    "id": "MINSA_SIS",
+    "nombre": "MINSA — Sistema Integral de Salud",
+    "descripcion": "Historias clínicas electrónicas, vacunación, farmacia y aseguramiento universal. Integra 2,400 establecimientos de salud.",
+    "poblacion": 33000000,
+    "impacto_s_hora": 1800000,
+    "nivel_criticidad": 4,
+    "categoria": "Salud"
+  },
+  {
+    "id": "MTC_VIAL",
+    "nombre": "MTC — Red Vial Nacional",
+    "descripcion": "Sistema de monitoreo de 27,000 km de vías nacionales, peajes electrónicos, semáforos inteligentes y control de tráfico.",
+    "poblacion": 20000000,
+    "impacto_s_hora": 900000,
+    "nivel_criticidad": 3,
+    "categoria": "Infraestructura"
+  },
+  {
+    "id": "OSINERGMIN",
+    "nombre": "OSINERGMIN — Supervisión de Energía y Minas",
+    "descripcion": "Supervisión de la infraestructura energética: 14,000 MW de capacidad instalada, red de transición y distribución eléctrica.",
+    "poblacion": 33000000,
+    "impacto_s_hora": 7500000,
+    "nivel_criticidad": 5,
+    "categoria": "Energía"
+  },
+  {
+    "id": "SEACE",
+    "nombre": "SEACE — Sistema Electrónico de Contrataciones",
+    "descripcion": "Plataforma de contrataciones públicas: licitaciones, concursos y adjudicaciones directas del Estado. Transparencia fiscal.",
+    "poblacion": 33000000,
+    "impacto_s_hora": 800000,
+    "nivel_criticidad": 3,
+    "categoria": "Gobernanza"
+  },
+  {
+    "id": "PNP_SISTEMAS",
+    "nombre": "PNP — Sistemas de Seguridad Ciudadana",
+    "descripcion": "Cámaras de vigilancia, centros de monitoreo, bases de datos de antecedentes y sistema de emergencias 105.",
+    "poblacion": 33000000,
+    "impacto_s_hora": 1200000,
+    "nivel_criticidad": 4,
+    "categoria": "Seguridad"
+  },
+  {
+    "id": "SBN",
+    "nombre": "SBN — Sistema Bancario Nacional",
+    "descripcion": "Infraestructura financiera central: interbancario (CCL), ACH, transferencias SPEI y sistemas de pago electrónicos.",
+    "poblacion": 18000000,
+    "impacto_s_hora": 9200000,
+    "nivel_criticidad": 5,
+    "categoria": "Finanzas"
+  },
+  {
+    "id": "EDUCATIVA",
+    "nombre": "MINEDU — Plataforma Educativa",
+    "descripcion": "Sistema de gestión escolar, matrícula electrónica, nombramientos docentes y distribución de presupuesto educativo.",
+    "poblacion": 8000000,
+    "impacto_s_hora": 600000,
+    "nivel_criticidad": 3,
+    "categoria": "Educación"
+  },
+  {
+    "id": "TRANSPORTE_AEREO",
+    "nombre": "DGAC — Control de Tránsito Aéreo",
+    "descripcion": "Sistema de navegación aérea, control de tráfico aéreo, meteorología y coordinación con 28 aeropuertos internacionales.",
+    "poblacion": 25000000,
+    "impacto_s_hora": 3500000,
+    "nivel_criticidad": 5,
+    "categoria": "Transporte"
+  }
+]

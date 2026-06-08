@@ -1,0 +1,156 @@
+[
+  {
+    "id": "ACT-001",
+    "nombre": "RENIEC",
+    "categoria": "estado",
+    "descripcion": "Registro Nacional de Identificación y Estado Civil. Base de datos central de todos los ciudadanos peruanos.",
+    "nivel_criticidad": 5
+  },
+  {
+    "id": "ACT-002",
+    "nombre": "SIAF",
+    "categoria": "estado",
+    "descripcion": "Sistema Integrado de Administración Financiera del Estado. Control del gasto público y Tesoro Público.",
+    "nivel_criticidad": 5
+  },
+  {
+    "id": "ACT-003",
+    "nombre": "Gas de Camisea",
+    "categoria": "infra",
+    "descripcion": "Sistema de explotación y transporte de gas natural desde la cuenca de Camisea (Cusco) hacia la costa.",
+    "nivel_criticidad": 5
+  },
+  {
+    "id": "ACT-004",
+    "nombre": "SENAMHI",
+    "categoria": "estado",
+    "descripcion": "Servicio Nacional de Meteorología e Hidrología. Monitoreo climático y alertas tempranas.",
+    "nivel_criticidad": 4
+  },
+  {
+    "id": "ACT-005",
+    "nombre": "SEIN (Sistema Eléctrico Interconectado Nacional)",
+    "categoria": "infra",
+    "descripcion": "Red de transmisión eléctrica nacional que conecta generadores y distribuidores de energía.",
+    "nivel_criticidad": 5
+  },
+  {
+    "id": "ACT-006",
+    "nombre": "RENIEMA",
+    "categoria": "estado",
+    "descripcion": "Registro Nacional de Migraciones. Control de flujos migratorios y fronteras digitales.",
+    "nivel_criticidad": 4
+  },
+  {
+    "id": "ACT-007",
+    "nombre": "SUNAT",
+    "categoria": "estado",
+    "descripcion": "Superintendencia Nacional de Aduanas y Administración Tributaria. Recaudación y comercio exterior.",
+    "nivel_criticidad": 4
+  },
+  {
+    "id": "ACT-008",
+    "nombre": "OSINERGMIN",
+    "categoria": "infra",
+    "descripcion": "Organismo Supervisor de la Inversión en Energía y Minas. Supervisión de infraestructura energética y minera.",
+    "nivel_criticidad": 4
+  },
+  {
+    "id": "ACT-009",
+    "nombre": "Red de Fibra Óptica Transoceánica",
+    "categoria": "infra",
+    "descripcion": "Sistema de cables submarinos que conectan Perú con Asia y el resto de América.",
+    "nivel_criticidad": 5
+  },
+  {
+    "id": "ACT-010",
+    "nombre": "PNP - Sistema de Comunicaciones",
+    "categoria": "estado",
+    "descripcion": "Red de comunicaciones de la Policía Nacional del Perú para operaciones de seguridad interna.",
+    "nivel_criticidad": 4
+  },
+  {
+    "id": "ACT-011",
+    "nombre": "MINSA - SISALUD",
+    "categoria": "estado",
+    "descripcion": "Sistema de Información del Seguro Integral de Salud. Historias clínicas y prestaciones.",
+    "nivel_criticidad": 4
+  },
+  {
+    "id": "ACT-012",
+    "nombre": "Banco de la Nación",
+    "categoria": "infra",
+    "descripcion": "Plataforma de pagos del Estado y transferencias interbancarias. Columna vertebral del sistema financiero público.",
+    "nivel_criticidad": 5
+  },
+  {
+    "id": "ACT-013",
+    "nombre": "Línea 1 del Metro de Lima",
+    "categoria": "infra",
+    "descripcion": "Sistema de transporte masivo que mueve 500k pasajeros diarios. Red de comunicación y control.",
+    "nivel_criticidad": 3
+  },
+  {
+    "id": "ACT-014",
+    "nombre": "Sistema de Riego Chavimochic",
+    "categoria": "infra",
+    "descripcion": "Infraestructura de riego que abastece la agricultura en La Libertad y Ancash.",
+    "nivel_criticidad": 4
+  },
+  {
+    "id": "ACT-015",
+    "nombre": "DIGIMIDE",
+    "categoria": "estado",
+    "descripcion": "Sistema de Demarcación Territorial Digital. Mapas oficiales y límites geopolíticos.",
+    "nivel_criticidad": 3
+  },
+  {
+    "id": "ACT-016",
+    "nombre": "Planta de LNG Pampa Melchorita",
+    "categoria": "infra",
+    "descripcion": "Planta de licuefacción de gas natural. Exportación de GNL a mercados asiáticos.",
+    "nivel_criticidad": 5
+  },
+  {
+    "id": "ACT-017",
+    "nombre": "SICLO (Sistema de Control Logístico)",
+    "categoria": "estado",
+    "descripcion": "Gestión logística de cadenas de suministro del Estado para emergencias y operaciones.",
+    "nivel_criticidad": 3
+  },
+  {
+    "id": "ACT-018",
+    "nombre": "Aeropuerto Internacional Jorge Chávez",
+    "categoria": "infra",
+    "descripcion": "Principal hub aéreo del país. Sistemas de control de tráfico aéreo y comunicaciones.",
+    "nivel_criticidad": 5
+  },
+  {
+    "id": "ACT-019",
+    "nombre": "SENACE",
+    "categoria": "estado",
+    "descripcion": "Servicio Nacional de Certificación Ambiental para Inversiones Sostenibles.",
+    "nivel_criticidad": 2
+  },
+  {
+    "id": "ACT-020",
+    "nombre": "Puerto del Callao - Muelle Sur",
+    "categoria": "infra",
+    "descripcion": "Principal puerto comercial del Perú. Operaciones de carga y logística marítima.",
+    "nivel_criticidad": 4
+  },
+  {
+    "id": "ACT-021",
+    "nombre": "COPEINFORM",
+    "categoria": "estado",
+    "descripcion": "Comité de Operaciones de Emergencia Nacional. Coordinación interinstitucional ante desastres.",
+    "nivel_criticidad": 4
+  },
+  {
+    "id": "ACT-022",
+    "nombre": "Tren Macho (Cerro de Pasco)",
+    "categoria": "infra",
+    "descripcion": "Red ferroviaria minera que conecta Cerro de Pasco con la red nacional. Transporte de minerales estratégicos.",
+    "nivel_criticidad": 3
+  }
+]

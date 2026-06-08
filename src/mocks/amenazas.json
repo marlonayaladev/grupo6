@@ -1,0 +1,18 @@
+[
+  { "id": "AMZ-001", "nombre": "Ransomware contra infraestructura crítica", "grupo": "Ciberataques", "nivel_impacto_base": 5 },
+  { "id": "AMZ-002", "nombre": "Ataque DDoS a servicios gubernamentales", "grupo": "Ciberataques", "nivel_impacto_base": 4 },
+  { "id": "AMZ-003", "nombre": "Intrusión en red de energía eléctrica", "grupo": "Ciberataques", "nivel_impacto_base": 5 },
+  { "id": "AMZ-004", "nombre": "Supply chain attack a software estatal", "grupo": "Ciberataques", "nivel_impacto_base": 4 },
+  { "id": "AMZ-005", "nombre": "Exfiltración masiva de datos personales (RENIEC)", "grupo": "Datos", "nivel_impacto_base": 5 },
+  { "id": "AMZ-006", "nombre": "Filtración de datos financieros del SIAF", "grupo": "Datos", "nivel_impacto_base": 5 },
+  { "id": "AMZ-007", "nombre": "Robo de propiedad intelectual minera", "grupo": "Datos", "nivel_impacto_base": 3 },
+  { "id": "AMZ-008", "nombre": "Vazamiento de bases de datos de salud (SISALUD)", "grupo": "Datos", "nivel_impacto_base": 4 },
+  { "id": "AMZ-009", "nombre": "Campaña de desinformación electoral", "grupo": "Cognitivos", "nivel_impacto_base": 4 },
+  { "id": "AMZ-010", "nombre": "Manipulación de narrativas en redes sociales", "grupo": "Cognitivos", "nivel_impacto_base": 3 },
+  { "id": "AMZ-011", "nombre": "Deepfakes de funcionarios públicos", "grupo": "Cognitivos", "nivel_impacto_base": 4 },
+  { "id": "AMZ-012", "nombre": "Ingeniería social a mandos policiales", "grupo": "Cognitivos", "nivel_impacto_base": 3 },
+  { "id": "AMZ-013", "nombre": "Ataque a infraestructura de telecomunicaciones", "grupo": "Ciberataques", "nivel_impacto_base": 5 },
+  { "id": "AMZ-014", "nombre": "Intercepción de comunicaciones clasificadas", "grupo": "Datos", "nivel_impacto_base": 5 },
+  { "id": "AMZ-015", "nombre": "Sabotaje digital a sistema de riego", "grupo": "Ciberataques", "nivel_impacto_base": 4 },
+  { "id": "AMZ-016", "nombre": "Guerra híbrida contra percepción ciudadana", "grupo": "Cognitivos", "nivel_impacto_base": 4 }
+]
