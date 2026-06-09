@@ -90,7 +90,7 @@ export default function PasoActivos() {
             return (
               <Card
                 key={activo.id}
-                className={`p-4 cursor-pointer transition-all ${
+                className={`p-3 sm:p-4 cursor-pointer transition-all ${
                   selected
                     ? 'border-cyan shadow-[0_0_12px_rgba(0,212,255,0.15)]'
                     : 'border-army/50 hover:border-army'
@@ -101,7 +101,7 @@ export default function PasoActivos() {
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
                       <div
-                        className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all ${
+                        className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all shrink-0 ${
                           selected
                             ? 'bg-cyan border-cyan'
                             : 'border-army bg-navy'
@@ -113,15 +113,15 @@ export default function PasoActivos() {
                           </svg>
                         )}
                       </div>
-                      <span className="text-sm font-semibold text-textLight">
+                      <span className="text-xs sm:text-sm font-semibold text-textLight">
                         {activo.nombre}
                       </span>
                     </div>
-                    <p className="text-[11px] text-textLight/40 mt-1.5 leading-relaxed line-clamp-2">
+                    <p className="text-[10px] sm:text-[11px] text-textLight/40 mt-1.5 leading-relaxed line-clamp-2">
                       {activo.descripcion}
                     </p>
                   </div>
-                  <span className={`text-[10px] font-bold uppercase tracking-wider shrink-0 ${criticidadColor[activo.nivel_criticidad]}`}>
+                  <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shrink-0 ${criticidadColor[activo.nivel_criticidad]}`}>
                     {criticidadLabel[activo.nivel_criticidad]}
                   </span>
                 </div>
@@ -137,7 +137,7 @@ export default function PasoActivos() {
     <div>
       <SectionHeader title="Selección de Activos Críticos" />
 
-      <div className="flex gap-8 mb-8">
+      <div className="flex flex-col md:flex-row gap-6 md:gap-8 mb-8">
         {renderColumn('Infraestructura Crítica', infra)}
         {renderColumn('Sistemas del Estado', estado)}
       </div>

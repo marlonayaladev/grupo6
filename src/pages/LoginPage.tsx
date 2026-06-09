@@ -33,11 +33,7 @@ export default function LoginPage() {
       >
         <Card className="p-8">
           <div className="text-center mb-8">
-            <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-cyan/10 border border-cyan/30 flex items-center justify-center">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-cyan">
-                <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-            </div>
+            <img src="/logo.png" alt="Logo" className="mx-auto mb-4" style={{ width: 250, height: 200, objectFit: 'contain' }} />
             <h1 className="text-lg font-bold text-textLight uppercase tracking-wider">
               Acceso Restringido
             </h1>

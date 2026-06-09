@@ -37,8 +37,8 @@ export default function PasoIniciativa() {
       <SectionHeader title="Definición de Iniciativa" />
 
       {vista === 'grabar' && (
-        <Card className="p-8">
-          <p className="text-sm text-textLight/50 mb-8">
+        <Card className="p-6 sm:p-8">
+          <p className="text-sm text-textLight/50 mb-6 sm:mb-8">
             Describa verbalmente la iniciativa que desea evaluar. La IA extraerá
             automáticamente los parámetros clave.
           </p>
@@ -47,19 +47,19 @@ export default function PasoIniciativa() {
       )}
 
       {vista === 'procesando' && (
-        <Card className="p-8 flex flex-col items-center justify-center gap-4">
+        <Card className="p-6 sm:p-8 flex flex-col items-center justify-center gap-4">
           <Spinner />
           <p className="text-sm text-textLight/60">Analizando iniciativa...</p>
         </Card>
       )}
 
       {vista === 'resultado' && datos && (
-        <Card className="p-8">
+        <Card className="p-6 sm:p-8">
           <p className="text-sm text-textLight/50 mb-6">
             Parámetros extraídos. Puede editar antes de continuar.
           </p>
 
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
             <div>
               <label className="block text-[10px] font-bold uppercase tracking-wider text-textLight/50 mb-2">
                 Nombre de Iniciativa
@@ -118,7 +118,7 @@ export default function PasoIniciativa() {
             </div>
           </div>
 
-          <div className="flex gap-4 mt-8">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8">
             <Button variant="primary" onClick={guardar}>
               Añadir Amenaza
             </Button>

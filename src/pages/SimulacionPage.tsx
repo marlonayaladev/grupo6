@@ -16,7 +16,7 @@ export default function SimulacionPage() {
 
   if (!sim) {
     return (
-      <div className="px-6 py-10">
+      <div className="px-4 sm:px-6 py-10">
         <div className="max-w-6xl mx-auto">
           <SectionHeader title="Simulación no encontrada" />
           <Link to="/">
@@ -34,7 +34,6 @@ export default function SimulacionPage() {
   if (isPresenting) {
     return (
       <div className="min-h-full text-textLight">
-        {/* Botón salir — fixed top-right */}
         <button
           onClick={() => setIsPresenting(false)}
           className="fixed top-4 right-4 z-50 inline-flex items-center gap-2 rounded-lg font-bold uppercase tracking-wider text-xs px-4 py-2 bg-danger/15 text-danger border border-danger hover:bg-danger/25 hover:shadow-[0_0_20px_rgba(255,59,59,0.3)] active:scale-95 transition-all duration-200 cursor-pointer"
@@ -45,7 +44,7 @@ export default function SimulacionPage() {
           Salir de presentación
         </button>
 
-        <div className="w-full flex flex-col gap-10 px-10 py-10">
+        <div className="w-full flex flex-col gap-8 sm:gap-10 px-4 sm:px-10 py-8 sm:py-10">
           <SectionHeader title={`Simulación ${id?.slice(0, 8)} — Modo Presentación`} />
           <PanelEfectoInstitucional datos={datos} />
           <PanelEfectoNacional datos={datos} />
@@ -61,8 +60,8 @@ export default function SimulacionPage() {
   }
 
   return (
-    <div className="px-6 py-10">
-      <div className="max-w-6xl mx-auto space-y-10">
+    <div className="px-4 sm:px-6 py-8 sm:py-10">
+      <div className="max-w-6xl mx-auto space-y-8 sm:space-y-10">
         <SectionHeader title={`Simulación ${id?.slice(0, 8)}`} />
 
         <PanelEfectoInstitucional datos={datos} />
@@ -74,7 +73,7 @@ export default function SimulacionPage() {
           iniciativa={sim.iniciativa}
         />
 
-        <div className="pt-4 border-t border-army flex items-center justify-between">
+        <div className="pt-4 border-t border-army flex flex-col sm:flex-row items-center justify-between gap-4">
           <Link to="/">
             <Button variant="ghost">Volver al Inicio</Button>
           </Link>

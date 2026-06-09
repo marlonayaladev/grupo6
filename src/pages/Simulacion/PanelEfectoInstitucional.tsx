@@ -50,17 +50,17 @@ function MapaCalor({ datos }: { datos: SimulacionResult }) {
   ];
 
   return (
-    <div className="grid grid-cols-3 gap-2">
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
       {metricas.map((m) => {
         const pct = Math.min(100, Math.max(0, m.value));
         const bg =
           pct > 70 ? 'bg-success/30' : pct > 40 ? 'bg-warning/30' : 'bg-danger/30';
         return (
-          <div key={m.label} className={`rounded-lg p-3 text-center ${bg}`}>
-            <p className="text-[10px] text-textLight/60 uppercase tracking-wider mb-1">
+          <div key={m.label} className={`rounded-lg p-2 sm:p-3 text-center ${bg}`}>
+            <p className="text-[9px] sm:text-[10px] text-textLight/60 uppercase tracking-wider mb-1">
               {m.label}
             </p>
-            <p className="text-lg font-bold text-textLight">{Math.round(pct)}%</p>
+            <p className="text-base sm:text-lg font-bold text-textLight">{Math.round(pct)}%</p>
           </div>
         );
       })}
@@ -76,9 +76,9 @@ function MetricaCard({ label, valor, unidad, delay }: {
 }) {
   return (
     <motion.div custom={delay} variants={fadeUp} initial="hidden" animate="visible">
-      <Card className="p-4">
-        <p className="text-[10px] text-textLight/50 uppercase tracking-wider mb-1">{label}</p>
-        <p className="text-xl font-bold text-textLight">
+      <Card className="p-3 sm:p-4">
+        <p className="text-[9px] sm:text-[10px] text-textLight/50 uppercase tracking-wider mb-1">{label}</p>
+        <p className="text-lg sm:text-xl font-bold text-textLight">
           {valor}
           <span className="text-xs text-textLight/40 ml-1">{unidad}</span>
         </p>
@@ -92,9 +92,9 @@ export default function PanelEfectoInstitucional({ datos }: Props) {
     <div>
       <SectionHeader title="Efecto Institucional" />
 
-      <div className="grid grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
         {/* Semáforo */}
-        <motion.div custom={0} variants={fadeUp} initial="hidden" animate="visible" className="col-span-1">
+        <motion.div custom={0} variants={fadeUp} initial="hidden" animate="visible" className="sm:col-span-1">
           <Card className="p-6 flex flex-col items-center">
             <p className="text-[10px] text-textLight/50 uppercase tracking-wider mb-4">Riesgo Global</p>
             <SemaforoRiesgo nivel={datos.parametricas.riesgoGlobal} />
@@ -102,18 +102,18 @@ export default function PanelEfectoInstitucional({ datos }: Props) {
         </motion.div>
 
         {/* Mapa de calor */}
-        <motion.div custom={1} variants={fadeUp} initial="hidden" animate="visible" className="col-span-1">
-          <Card className="p-6">
+        <motion.div custom={1} variants={fadeUp} initial="hidden" animate="visible" className="sm:col-span-1">
+          <Card className="p-4 sm:p-6">
             <p className="text-[10px] text-textLight/50 uppercase tracking-wider mb-4">Mapa de Calor</p>
             <MapaCalor datos={datos} />
           </Card>
         </motion.div>
 
         {/* Gráfico */}
-        <motion.div custom={2} variants={fadeUp} initial="hidden" animate="visible" className="col-span-2">
-          <Card className="p-6">
+        <motion.div custom={2} variants={fadeUp} initial="hidden" animate="visible" className="sm:col-span-2">
+          <Card className="p-4 sm:p-6">
             <p className="text-[10px] text-textLight/50 uppercase tracking-wider mb-4">Serie Temporal — Disponibilidad</p>
-            <ResponsiveContainer width="100%" height={220}>
+            <ResponsiveContainer width="100%" height={200}>
               <LineChart data={datos.serie_temporal}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1B3A6B" />
                 <XAxis
@@ -159,7 +159,7 @@ export default function PanelEfectoInstitucional({ datos }: Props) {
       </div>
 
       {/* 6 tarjetas de métricas */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
         <MetricaCard
           label="Impacto Económico"
           valor={`$${(datos.efecto_institucional.impacto_economico / 1_000_000).toFixed(1)}M`}

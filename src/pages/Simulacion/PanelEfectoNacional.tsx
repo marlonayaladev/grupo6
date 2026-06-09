@@ -95,20 +95,20 @@ export default function PanelEfectoNacional({ datos }: Props) {
     <div>
       <SectionHeader title="Efecto Nacional" />
 
-      <div className="grid grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-8">
         {/* Mapa de Perú */}
-        <motion.div custom={0} variants={fadeUp} initial="hidden" animate="visible" className="col-span-2">
-          <Card className="p-6 overflow-hidden" style={{ height: 360 }}>
+        <motion.div custom={0} variants={fadeUp} initial="hidden" animate="visible">
+          <Card className="p-4 sm:p-6 overflow-hidden" style={{ height: 340 }}>
             <p className="text-[10px] text-textLight/50 uppercase tracking-wider mb-3">Mapa Nacional — Regiones Afectadas</p>
-            <div style={{ height: 300 }}>
+            <div style={{ height: 280 }}>
               <MapaPeru datos={datos} />
             </div>
           </Card>
         </motion.div>
 
         {/* Curva de Confianza */}
-        <motion.div custom={1} variants={fadeUp} initial="hidden" animate="visible" className="col-span-2">
-          <Card className="p-6">
+        <motion.div custom={1} variants={fadeUp} initial="hidden" animate="visible">
+          <Card className="p-4 sm:p-6">
             <p className="text-[10px] text-textLight/50 uppercase tracking-wider mb-4">Curva de Confianza — 30 días</p>
             <ResponsiveContainer width="100%" height={240}>
               <AreaChart data={datos.serie_temporal}>
@@ -136,10 +136,10 @@ export default function PanelEfectoNacional({ datos }: Props) {
         </motion.div>
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
         {/* Radar de sectores */}
-        <motion.div custom={2} variants={fadeUp} initial="hidden" animate="visible" className="col-span-1">
-          <Card className="p-6">
+        <motion.div custom={2} variants={fadeUp} initial="hidden" animate="visible">
+          <Card className="p-4 sm:p-6">
             <p className="text-[10px] text-textLight/50 uppercase tracking-wider mb-4">Afectación por Sector Económico</p>
             <ResponsiveContainer width="100%" height={260}>
               <RadarChart data={sectorData}>
@@ -154,25 +154,25 @@ export default function PanelEfectoNacional({ datos }: Props) {
         </motion.div>
 
         {/* Tarjetas de impacto */}
-        <motion.div custom={3} variants={fadeUp} initial="hidden" animate="visible" className="col-span-1">
-          <Card className="p-6">
+        <motion.div custom={3} variants={fadeUp} initial="hidden" animate="visible">
+          <Card className="p-4 sm:p-6">
             <p className="text-[10px] text-textLight/50 uppercase tracking-wider mb-4">Impacto Económico Nacional</p>
             <div className="space-y-4">
               <div className="bg-danger/10 border border-danger/20 rounded-xl p-4">
                 <p className="text-[10px] text-danger/70 uppercase tracking-wider">Total Estimado</p>
-                <p className="text-2xl font-bold text-danger">
+                <p className="text-xl sm:text-2xl font-bold text-danger">
                   S/ {(datos.efecto_nacional.impacto_economico_total / 1_000_000).toFixed(1)}M
                 </p>
               </div>
               <div className="bg-surface border border-army/20 rounded-xl p-4">
                 <p className="text-[10px] text-textLight/50 uppercase tracking-wider">Institucional</p>
-                <p className="text-lg font-bold text-textLight">
+                <p className="text-base sm:text-lg font-bold text-textLight">
                   S/ {(datos.efecto_institucional.impacto_economico / 1_000_000).toFixed(1)}M
                 </p>
               </div>
               <div className="bg-surface border border-army/20 rounded-xl p-4">
                 <p className="text-[10px] text-textLight/50 uppercase tracking-wider">Propagación Regional</p>
-                <p className="text-lg font-bold text-cyan">
+                <p className="text-base sm:text-lg font-bold text-cyan">
                   x{((datos.efecto_nacional.impacto_economico_total / datos.efecto_institucional.impacto_economico) || 0).toFixed(1)}
                 </p>
               </div>
@@ -181,8 +181,8 @@ export default function PanelEfectoNacional({ datos }: Props) {
         </motion.div>
 
         {/* Métricas nacionales */}
-        <motion.div custom={4} variants={fadeUp} initial="hidden" animate="visible" className="col-span-1">
-          <Card className="p-6">
+        <motion.div custom={4} variants={fadeUp} initial="hidden" animate="visible">
+          <Card className="p-4 sm:p-6">
             <p className="text-[10px] text-textLight/50 uppercase tracking-wider mb-4">Indicadores Nacionales</p>
             <div className="space-y-4">
               <div>

@@ -53,10 +53,10 @@ export default function FichaResultados({ datos, activos, amenazas, iniciativa }
     <div>
       <SectionHeader title="Ficha de Resultados" />
 
-      <div className="grid grid-cols-3 gap-6 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6">
         {/* Resumen de entrada */}
         <motion.div custom={0} variants={fadeUp} initial="hidden" animate="visible">
-          <Card className="p-6 h-full">
+          <Card className="p-5 sm:p-6 h-full">
             <p className="text-[10px] text-textLight/50 uppercase tracking-wider mb-3">
               Parámetros de Entrada
             </p>
@@ -83,20 +83,20 @@ export default function FichaResultados({ datos, activos, amenazas, iniciativa }
 
         {/* Impacto económico */}
         <motion.div custom={1} variants={fadeUp} initial="hidden" animate="visible">
-          <Card className="p-6 h-full">
+          <Card className="p-5 sm:p-6 h-full">
             <p className="text-[10px] text-textLight/50 uppercase tracking-wider mb-3">
               Impacto Económico Estimado
             </p>
             <div className="space-y-4">
               <div className="bg-danger/10 border border-danger/20 rounded-xl p-4">
                 <p className="text-[10px] text-danger/70 uppercase tracking-wider">Nacional</p>
-                <p className="text-xl font-bold text-danger">
+                <p className="text-lg sm:text-xl font-bold text-danger">
                   S/ {(datos.efecto_nacional.impacto_economico_total / 1_000_000).toFixed(1)}M
                 </p>
               </div>
               <div className="bg-surface border border-army/20 rounded-xl p-4">
                 <p className="text-[10px] text-textLight/50 uppercase tracking-wider">Institucional</p>
-                <p className="text-lg font-bold text-textLight">
+                <p className="text-base sm:text-lg font-bold text-textLight">
                   S/ {(datos.efecto_institucional.impacto_economico / 1_000_000).toFixed(1)}M
                 </p>
               </div>
@@ -106,7 +106,7 @@ export default function FichaResultados({ datos, activos, amenazas, iniciativa }
 
         {/* Indicadores clave */}
         <motion.div custom={2} variants={fadeUp} initial="hidden" animate="visible">
-          <Card className="p-6 h-full">
+          <Card className="p-5 sm:p-6 h-full">
             <p className="text-[10px] text-textLight/50 uppercase tracking-wider mb-3">
               Indicadores Clave
             </p>
@@ -136,7 +136,7 @@ export default function FichaResultados({ datos, activos, amenazas, iniciativa }
 
       {/* Recomendaciones */}
       <motion.div custom={3} variants={fadeUp} initial="hidden" animate="visible">
-        <Card className="p-6">
+        <Card className="p-5 sm:p-6">
           <p className="text-[10px] text-textLight/50 uppercase tracking-wider mb-4">
             Recomendaciones de Ciberseguridad
           </p>
@@ -147,7 +147,7 @@ export default function FichaResultados({ datos, activos, amenazas, iniciativa }
               <span className="text-sm text-textLight/50">Generando recomendaciones...</span>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {recomendaciones.map((rec, i) => (
                 <motion.div
                   key={i}
@@ -171,7 +171,7 @@ export default function FichaResultados({ datos, activos, amenazas, iniciativa }
       </motion.div>
 
       {/* Botón PDF */}
-      <motion.div custom={8} variants={fadeUp} initial="hidden" animate="visible" className="mt-6 flex justify-end">
+      <motion.div custom={8} variants={fadeUp} initial="hidden" animate="visible" className="mt-6 flex justify-center sm:justify-end">
         <PDFDownloadLink
           document={
             <InformePDF
@@ -185,7 +185,7 @@ export default function FichaResultados({ datos, activos, amenazas, iniciativa }
           fileName="Informe_Simulacion.pdf"
         >
           {({ loading }) => (
-            <span className="inline-flex items-center gap-2 rounded-lg font-bold uppercase tracking-wider text-sm px-6 py-3 bg-cyan/15 text-cyan border border-cyan hover:bg-cyan/25 hover:shadow-[0_0_20px_rgba(0,212,255,0.3)] active:scale-95 transition-all duration-200 cursor-pointer">
+            <span className="inline-flex items-center gap-2 rounded-lg font-bold uppercase tracking-wider text-xs sm:text-sm px-5 sm:px-6 py-2.5 sm:py-3 bg-cyan/15 text-cyan border border-cyan hover:bg-cyan/25 hover:shadow-[0_0_20px_rgba(0,212,255,0.3)] active:scale-95 transition-all duration-200 cursor-pointer">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                 <polyline points="7 10 12 15 17 10" />

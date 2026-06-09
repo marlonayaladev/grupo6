@@ -84,14 +84,14 @@ export default function BibliotecaPage() {
   };
 
   return (
-    <div className="px-6 py-10">
+    <div className="px-4 sm:px-6 py-8 sm:py-10">
       <div className="max-w-6xl mx-auto">
         <SectionHeader title="Biblioteca de Gemelos Digitales" />
 
         {/* Filtros */}
-        <div className="mb-8 flex flex-col md:flex-row gap-4">
+        <div className="mb-6 sm:mb-8 flex flex-col gap-3 sm:gap-4">
           {/* Buscador */}
-          <div className="relative flex-1 max-w-md">
+          <div className="relative flex-1">
             <svg
               className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-textLight/40"
               fill="none"
@@ -120,33 +120,35 @@ export default function BibliotecaPage() {
             )}
           </div>
 
-          {/* Filtro Categoría */}
-          <select
-            value={categoriaFiltro}
-            onChange={(e) => setCategoriaFiltro(e.target.value)}
-            className="bg-surface border border-army rounded-lg px-4 py-2.5 text-sm text-textLight focus:border-cyan focus:outline-none transition-colors cursor-pointer"
-          >
-            <option value="">Todas las categorías</option>
-            {CATEGORIAS.map((cat) => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
+          <div className="flex flex-col sm:flex-row gap-3">
+            {/* Filtro Categoría */}
+            <select
+              value={categoriaFiltro}
+              onChange={(e) => setCategoriaFiltro(e.target.value)}
+              className="bg-surface border border-army rounded-lg px-4 py-2.5 text-sm text-textLight focus:border-cyan focus:outline-none transition-colors cursor-pointer flex-1"
+            >
+              <option value="">Todas las categorías</option>
+              {CATEGORIAS.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
 
-          {/* Filtro Criticidad */}
-          <div className="flex border border-army rounded-lg overflow-hidden">
-            {CRITICIDADES.map((c) => (
-              <button
-                key={c.value}
-                onClick={() => setCriticidadFiltro(c.value)}
-                className={`px-3 py-2 text-xs font-bold uppercase tracking-wider transition-colors ${
-                  criticidadFiltro === c.value
-                    ? 'bg-cyan/15 text-cyan'
-                    : 'bg-surface text-textLight/50 hover:text-textLight'
-                }`}
-              >
-                {c.label}
-              </button>
-            ))}
+            {/* Filtro Criticidad */}
+            <div className="flex border border-army rounded-lg overflow-hidden">
+              {CRITICIDADES.map((c) => (
+                <button
+                  key={c.value}
+                  onClick={() => setCriticidadFiltro(c.value)}
+                  className={`px-3 py-2 text-xs font-bold uppercase tracking-wider transition-colors flex-1 sm:flex-none ${
+                    criticidadFiltro === c.value
+                      ? 'bg-cyan/15 text-cyan'
+                      : 'bg-surface text-textLight/50 hover:text-textLight'
+                  }`}
+                >
+                  {c.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -155,7 +157,7 @@ export default function BibliotecaPage() {
         </p>
 
         {/* Grid */}
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {filtrados.map((g, i) => (
             <motion.div
               key={g.id}
@@ -164,7 +166,7 @@ export default function BibliotecaPage() {
               initial="hidden"
               animate="visible"
             >
-              <Card className="p-5 flex flex-col h-full hover:border-cyan/40 transition-colors">
+              <Card className="p-4 sm:p-5 flex flex-col h-full hover:border-cyan/40 transition-colors">
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <p className="text-sm font-bold text-textLight leading-tight">{g.nombre}</p>
                   <span className={`shrink-0 text-[10px] font-bold uppercase ${nivelColor(g.nivel_criticidad)}`}>
@@ -172,7 +174,7 @@ export default function BibliotecaPage() {
                   </span>
                 </div>
 
-                <p className="text-xs text-textLight/50 leading-relaxed mb-4 flex-1">
+                <p className="text-xs text-textLight/50 leading-relaxed mb-4 flex-1 line-clamp-3">
                   {g.descripcion}
                 </p>
 
@@ -188,7 +190,7 @@ export default function BibliotecaPage() {
                 </div>
 
                 <div className="flex items-center justify-between border-t border-army/30 pt-3">
-                  <span className="text-[10px] text-textLight/30 uppercase tracking-wider">{g.categoria}</span>
+                  <span className="text-[10px] text-textLight/30 uppercase tracking-wider truncate mr-2">{g.categoria}</span>
                   <Button
                     variant="primary"
                     className="text-xs px-3 py-1.5"

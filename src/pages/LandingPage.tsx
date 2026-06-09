@@ -22,30 +22,30 @@ export default function LandingPage() {
     <div className="min-h-full bg-bg text-textLight relative">
       <ParticleCanvas />
 
-      <div className="relative z-10 flex flex-col items-center justify-center px-6 py-16">
+      <div className="relative z-10 flex flex-col items-center px-4 sm:px-6 py-12 sm:py-16">
         {/* Hero */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="max-w-3xl w-full text-center mb-12"
+          className="max-w-3xl w-full text-center mb-10 sm:mb-12"
         >
-          <div className="mb-8">
-            <h1 className="text-4xl md:text-5xl font-black uppercase tracking-[0.2em] text-cyan leading-tight">
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-cyan leading-tight">
               Sandbox Institucional
             </h1>
-            <h2 className="text-xl md:text-2xl font-bold uppercase tracking-widest text-textLight/70 mt-2">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold uppercase tracking-widest text-textLight/70 mt-2">
               de Resiliencia Digital
             </h2>
           </div>
 
-          <p className="text-textLight/50 text-sm max-w-xl mx-auto mb-10">
+          <p className="text-textLight/50 text-sm max-w-xl mx-auto mb-8 sm:mb-10 px-4">
             Simulación interactiva de escenarios de amenazas contra infraestructura crítica digital.
             Evalué riesgos, practique respuestas y analice resultados.
           </p>
 
           <Link to="/generar">
-            <Button variant="primary" className="text-base px-10 py-4">
+            <Button variant="primary" className="text-sm sm:text-base px-8 sm:px-10 py-3 sm:py-4">
               Generar Situación
             </Button>
           </Link>
@@ -65,11 +65,11 @@ export default function LandingPage() {
               <div className="h-px flex-1 bg-army/40" />
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {ultimas.map((sim, i) => (
                 <motion.div key={sim.id} custom={i} variants={fadeUp} initial="hidden" animate="visible">
                   <Link to={`/simulacion/${sim.id}`}>
-                    <Card className="p-5 hover:border-cyan/40 transition-all cursor-pointer h-full">
+                    <Card className="p-4 sm:p-5 hover:border-cyan/40 transition-all cursor-pointer h-full">
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-[10px] text-cyan font-mono">
                           {new Date(sim.fecha).toLocaleDateString('es-PE', {
@@ -82,7 +82,7 @@ export default function LandingPage() {
                           {sim.id.slice(0, 8)}
                         </span>
                       </div>
-                      <p className="text-sm font-semibold text-textLight mb-2">
+                      <p className="text-sm font-semibold text-textLight mb-2 truncate">
                         {sim.iniciativa || 'Sin iniciativa'}
                       </p>
                       <div className="flex gap-3 text-[10px] text-textLight/40">
@@ -106,7 +106,7 @@ export default function LandingPage() {
             transition={{ delay: 0.4, duration: 0.5 }}
             className="max-w-md w-full"
           >
-            <Card className="p-8 text-center">
+            <Card className="p-6 sm:p-8 text-center">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mx-auto mb-4 text-textLight/20">
                 <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
@@ -115,27 +115,6 @@ export default function LandingPage() {
             </Card>
           </motion.div>
         )}
-
-        {/* Links */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-          className="mt-12 flex gap-6"
-        >
-          {[
-            { to: '/historial', label: 'Historial' },
-            { to: '/biblioteca', label: 'Biblioteca' },
-          ].map((link) => (
-            <Link
-              key={link.to}
-              to={link.to}
-              className="text-xs text-textLight/30 hover:text-cyan transition-colors uppercase tracking-wider"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </motion.div>
       </div>
     </div>
   );
