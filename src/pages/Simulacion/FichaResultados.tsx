@@ -1,18 +1,14 @@
-import { useEffect, useState } from 'react';
-import { PDFDownloadLink } from '@react-pdf/renderer';
 import { motion } from 'framer-motion';
-import { generarRecomendacionesMock } from '../../utils/mockIA';
 import type { SimulacionResult } from '../../utils/simuladorMatematico';
-import { InformePDF } from '../../utils/generadorPDF';
 import Card from '../../components/ui/Card';
 import SectionHeader from '../../components/ui/SectionHeader';
-import Spinner from '../../components/ui/Spinner';
 
 interface Props {
   datos: SimulacionResult;
   activos: string[];
   amenazas: string[];
   iniciativa: string | null;
+  recomendaciones: string[];
 }
 
 const fadeUp = {
@@ -24,17 +20,7 @@ const fadeUp = {
   }),
 };
 
-export default function FichaResultados({ datos, activos, amenazas, iniciativa }: Props) {
-  const [recomendaciones, setRecomendaciones] = useState<string[]>([]);
-  const [cargando, setCargando] = useState(true);
-
-  useEffect(() => {
-    generarRecomendacionesMock().then((recs) => {
-      setRecomendaciones(recs);
-      setCargando(false);
-    });
-  }, []);
-
+export default function FichaResultados({ datos, activos, amenazas, iniciativa, recomendaciones }: Props) {
   const nivelRiesgo =
     datos.parametricas.riesgoGlobal < 0.33
       ? 'BAJO'
@@ -135,18 +121,12 @@ export default function FichaResultados({ datos, activos, amenazas, iniciativa }
       </div>
 
       {/* Recomendaciones */}
-      <motion.div custom={3} variants={fadeUp} initial="hidden" animate="visible">
-        <Card className="p-5 sm:p-6">
-          <p className="text-[10px] text-textLight/50 uppercase tracking-wider mb-4">
-            Recomendaciones de Ciberseguridad
-          </p>
-
-          {cargando ? (
-            <div className="flex items-center gap-3 py-8 justify-center">
-              <Spinner />
-              <span className="text-sm text-textLight/50">Generando recomendaciones...</span>
-            </div>
-          ) : (
+      {recomendaciones.length > 0 && (
+        <motion.div custom={3} variants={fadeUp} initial="hidden" animate="visible">
+          <Card className="p-5 sm:p-6">
+            <p className="text-[10px] text-textLight/50 uppercase tracking-wider mb-4">
+              Recomendaciones de Ciberseguridad
+            </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {recomendaciones.map((rec, i) => (
                 <motion.div
@@ -166,36 +146,9 @@ export default function FichaResultados({ datos, activos, amenazas, iniciativa }
                 </motion.div>
               ))}
             </div>
-          )}
-        </Card>
-      </motion.div>
-
-      {/* Botón PDF */}
-      <motion.div custom={8} variants={fadeUp} initial="hidden" animate="visible" className="mt-6 flex justify-center sm:justify-end">
-        <PDFDownloadLink
-          document={
-            <InformePDF
-              datos={datos}
-              activos={activos}
-              amenazas={amenazas}
-              iniciativa={iniciativa}
-              recomendaciones={recomendaciones}
-            />
-          }
-          fileName="Informe_Simulacion.pdf"
-        >
-          {({ loading }) => (
-            <span className="inline-flex items-center gap-2 rounded-lg font-bold uppercase tracking-wider text-xs sm:text-sm px-5 sm:px-6 py-2.5 sm:py-3 bg-cyan/15 text-cyan border border-cyan hover:bg-cyan/25 hover:shadow-[0_0_20px_rgba(0,212,255,0.3)] active:scale-95 transition-all duration-200 cursor-pointer">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-              </svg>
-              {loading ? 'Generando...' : 'DESCARGAR INFORME PDF'}
-            </span>
-          )}
-        </PDFDownloadLink>
-      </motion.div>
+          </Card>
+        </motion.div>
+      )}
     </div>
   );
 }

@@ -84,6 +84,9 @@ export const useSimulacionStore = create<SimulacionState>()(
     }),
     {
       name: 'sandbox-resiliencia-storage',
+      partialize: (state) => ({
+        historial: state.historial,
+      }),
     }
   )
 );

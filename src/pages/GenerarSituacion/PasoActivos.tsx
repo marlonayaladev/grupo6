@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSimulacionStore } from '../../store/simulacionStore';
 import activosData from '../../mocks/activos.json';
 import Card from '../../components/ui/Card';
@@ -133,19 +134,14 @@ export default function PasoActivos() {
     );
   };
 
+  const navigate = useNavigate();
+
   return (
     <div>
-      <SectionHeader title="Selección de Activos Críticos" />
-
-      <div className="flex flex-col md:flex-row gap-6 md:gap-8 mb-8">
-        {renderColumn('Infraestructura Crítica', infra)}
-        {renderColumn('Sistemas del Estado', estado)}
-      </div>
-
-      <div className="flex items-center justify-between border-t border-army pt-6">
-        <span className="text-xs text-textLight/40">
-          {seleccionados.size} activo(s) seleccionado(s)
-        </span>
+      <div className="flex items-center justify-between mb-6">
+        <Button variant="ghost" onClick={() => navigate('/')}>
+          ← Retroceder
+        </Button>
         <Button
           variant="primary"
           disabled={seleccionados.size < 1}
@@ -153,6 +149,13 @@ export default function PasoActivos() {
         >
           Continuar
         </Button>
+      </div>
+
+      <SectionHeader title="Selección de Activos Críticos" />
+
+      <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+        {renderColumn('Infraestructura Crítica', infra)}
+        {renderColumn('Sistemas del Estado', estado)}
       </div>
     </div>
   );

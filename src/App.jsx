@@ -5,70 +5,16 @@ import GenerarSituacionPage from './pages/GenerarSituacionPage';
 import SimulacionPage from './pages/SimulacionPage';
 import HistorialPage from './pages/HistorialPage';
 import BibliotecaPage from './pages/BibliotecaPage';
-import LoginPage from './pages/LoginPage';
-
-function PrivateRoute({ children }) {
-  const isAuth = localStorage.getItem('isAuthenticated') === 'true';
-  return isAuth ? <MainLayout>{children}</MainLayout> : <Navigate to="/login" replace />;
-}
-
-function PublicRoute({ children }) {
-  const isAuth = localStorage.getItem('isAuthenticated') === 'true';
-  return isAuth ? <Navigate to="/" replace /> : children;
-}
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <LoginPage />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/"
-          element={
-            <PrivateRoute>
-              <LandingPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/generar"
-          element={
-            <PrivateRoute>
-              <GenerarSituacionPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/simulacion/:id"
-          element={
-            <PrivateRoute>
-              <SimulacionPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/historial"
-          element={
-            <PrivateRoute>
-              <HistorialPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/biblioteca"
-          element={
-            <PrivateRoute>
-              <BibliotecaPage />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/" element={<MainLayout><LandingPage /></MainLayout>} />
+        <Route path="/generar" element={<MainLayout><GenerarSituacionPage /></MainLayout>} />
+        <Route path="/simulacion/:id" element={<MainLayout><SimulacionPage /></MainLayout>} />
+        <Route path="/historial" element={<MainLayout><HistorialPage /></MainLayout>} />
+        <Route path="/biblioteca" element={<MainLayout><BibliotecaPage /></MainLayout>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

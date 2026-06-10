@@ -1,9 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { MapContainer, GeoJSON, useMap } from 'react-leaflet';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts';
+import { MapContainer, TileLayer, CircleMarker, Tooltip, useMap } from 'react-leaflet';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts';
 import 'leaflet/dist/leaflet.css';
-import peruGeo from '../../mocks/peru.json';
 import type { SimulacionResult } from '../../utils/simuladorMatematico';
 import Card from '../../components/ui/Card';
 import SectionHeader from '../../components/ui/SectionHeader';
@@ -21,7 +20,30 @@ const fadeUp = {
   }),
 };
 
-function FitBounds({ bounds }: { bounds: L.LatLngBoundsExpression }) {
+const REGIONES_PERU: { nombre: string; lat: number; lng: number }[] = [
+  { nombre: 'Lima', lat: -12.0464, lng: -77.0428 },
+  { nombre: 'Arequipa', lat: -16.4090, lng: -71.5375 },
+  { nombre: 'Trujillo', lat: -8.1091, lng: -79.0215 },
+  { nombre: 'Cusco', lat: -13.5320, lng: -71.9675 },
+  { nombre: 'Piura', lat: -5.1945, lng: -80.6328 },
+  { nombre: 'Chiclayo', lat: -6.7714, lng: -79.8409 },
+  { nombre: 'Iquitos', lat: -3.7491, lng: -73.2538 },
+  { nombre: 'Huancayo', lat: -12.0653, lng: -75.2049 },
+  { nombre: 'Puno', lat: -15.8402, lng: -70.0219 },
+  { nombre: 'Tacna', lat: -18.0146, lng: -70.2536 },
+  { nombre: 'Tarapoto', lat: -6.4816, lng: -76.4846 },
+  { nombre: 'Cajamarca', lat: -7.1638, lng: -78.5004 },
+  { nombre: 'Huaraz', lat: -9.5289, lng: -77.5280 },
+  { nombre: 'Ayacucho', lat: -13.1588, lng: -74.2239 },
+  { nombre: 'Ica', lat: -14.0680, lng: -75.7255 },
+  { nombre: 'Sullana', lat: -4.9041, lng: -80.6857 },
+  { nombre: 'Cerro de Pasco', lat: -10.6860, lng: -76.2569 },
+  { nombre: 'Moyobamba', lat: -6.0340, lng: -76.9718 },
+  { nombre: 'Tumbes', lat: -3.5670, lng: -80.4486 },
+  { nombre: 'Madre de Dios', lat: -12.5933, lng: -69.1817 },
+];
+
+function FitPeru({ bounds }: { bounds: L.LatLngBoundsExpression }) {
   const map = useMap();
   useEffect(() => { map.fitBounds(bounds, { padding: [20, 20] }); }, [map, bounds]);
   return null;
@@ -44,22 +66,16 @@ function buildSectorData(datos: SimulacionResult) {
 }
 
 function MapaPeru({ datos }: { datos: SimulacionResult }) {
-  const geoStyle = useMemo(() => {
-    const damagedIndices = new Set<number>();
-    while (damagedIndices.size < 3) {
-      damagedIndices.add(Math.floor(Math.random() * (peruGeo as GeoJSON.FeatureCollection).features.length));
-    }
+  const regionesAfectadas = useMemo(() => {
+    const numAfectadas = Math.min(5, Math.max(2, Math.round(datos.parametricas.riesgoGlobal * 8)));
+    const shuffled = [...REGIONES_PERU].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, numAfectadas);
+  }, [datos.parametricas.riesgoGlobal]);
 
-    return (_feature: GeoJSON.Feature, index: number) => ({
-      fillColor: damagedIndices.has(index) ? '#FF3B3B' : '#1B3A6B',
-      weight: 1,
-      opacity: 1,
-      color: '#00D4FF',
-      fillOpacity: damagedIndices.has(index) ? 0.7 : 0.4,
-    });
-  }, []);
+  const bounds: L.LatLngBoundsExpression = useMemo(() => [[-18.5, -81.5], [0.5, -68.5]], []);
 
-  const bounds: L.LatLngBoundsExpression = useMemo(() => [[-18.5, -81.5], [-0.5, -68.5]], []);
+  const isAfectada = (nombre: string) => regionesAfectadas.some(r => r.nombre === nombre);
+  const intensidad = datos.parametricas.riesgoGlobal;
 
   return (
     <MapContainer
@@ -68,14 +84,43 @@ function MapaPeru({ datos }: { datos: SimulacionResult }) {
       scrollWheelZoom={false}
       zoomControl={false}
       attributionControl={false}
-      style={{ height: '100%', width: '100%', background: '#0A1628', borderRadius: 12 }}
+      dragging={false}
+      doubleClickZoom={false}
+      keyboard={false}
+      touchZoom={false}
+      style={{ height: '100%', width: '100%', borderRadius: 12 }}
     >
-      <FitBounds bounds={bounds} />
-      <GeoJSON
-        key="peru-geojson"
-        data={peruGeo as unknown as GeoJSON.FeatureCollection}
-        style={geoStyle}
+      <TileLayer
+        url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+        maxZoom={19}
       />
+      <FitPeru bounds={bounds} />
+      {REGIONES_PERU.map((region) => {
+        const afectada = isAfectada(region.nombre);
+        return (
+          <CircleMarker
+            key={region.nombre}
+            center={[region.lat, region.lng]}
+            radius={afectada ? 8 : 3}
+            pathOptions={{
+              color: afectada ? '#FF3B3B' : '#00D4FF',
+              fillColor: afectada ? '#FF3B3B' : '#1B3A6B',
+              fillOpacity: afectada ? 0.6 : 0.4,
+              weight: afectada ? 2 : 1,
+              opacity: afectada ? 1 : 0.5,
+            }}
+          >
+            <Tooltip
+              direction="top"
+              offset={[0, -8]}
+              opacity={1}
+              className="!bg-[#0D1F3C] !border-[#1B3A6B] !text-[#E8EDF5] !rounded-lg !text-xs !font-bold"
+            >
+              <span>{region.nombre}{afectada ? ' — Afectada' : ''}</span>
+            </Tooltip>
+          </CircleMarker>
+        );
+      })}
     </MapContainer>
   );
 }
@@ -121,7 +166,7 @@ export default function PanelEfectoNacional({ datos }: Props) {
                 <CartesianGrid strokeDasharray="3 3" stroke="#1B3A6B" />
                 <XAxis dataKey="dia" tick={{ fontSize: 10, fill: '#64748b' }} axisLine={{ stroke: '#1B3A6B' }} />
                 <YAxis tick={{ fontSize: 10, fill: '#64748b' }} axisLine={{ stroke: '#1B3A6B' }} domain={[0, 100]} />
-                <Tooltip contentStyle={tooltipStyle} />
+                <RechartsTooltip contentStyle={tooltipStyle} />
                 <Area
                   type="monotone"
                   dataKey="recuperacion"

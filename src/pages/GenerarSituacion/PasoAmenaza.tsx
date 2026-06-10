@@ -46,7 +46,7 @@ export default function PasoAmenaza() {
   const [ambito, setAmbito] = useState<AmbitoResult | null>(null);
 
   const navigate = useNavigate();
-  const { activosSeleccionados, iniciativa, agregarSimulacion, resetSimulacion } = useSimulacionStore();
+  const { activosSeleccionados, iniciativa, agregarSimulacion, resetSimulacion, setPasoActual } = useSimulacionStore();
 
   const toggleGrupo = (grupo: string) => {
     setGruposAbiertos((prev) => {
@@ -96,7 +96,21 @@ export default function PasoAmenaza() {
 
   return (
     <div>
-      <SectionHeader title="Amenazas y Ámbito de Materialización" />
+      <div className="flex items-center justify-between mb-6">
+        <SectionHeader title="Amenazas y Ámbito de Materialización" />
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" onClick={() => setPasoActual(2)}>
+            ← Retroceder
+          </Button>
+          <Button
+            variant="primary"
+            disabled={seleccionadas.size < 1}
+            onClick={generarSimulacion}
+          >
+            Generar Simulación
+          </Button>
+        </div>
+      </div>
 
       <div className="flex flex-col md:flex-row gap-8 mb-8">
         {/* Columna izquierda: Amenazas */}
@@ -240,11 +254,11 @@ export default function PasoAmenaza() {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="flex items-center justify-between border-t border-army pt-6">
-        <span className="text-xs text-textLight/40">
-          {seleccionadas.size} amenaza(s) seleccionada(s)
-        </span>
+      {/* Header buttons */}
+      <div className="flex items-center justify-between mb-8">
+        <Button variant="ghost" onClick={() => setPasoActual(2)}>
+          ← Retroceder
+        </Button>
         <Button
           variant="primary"
           disabled={seleccionadas.size < 1}
