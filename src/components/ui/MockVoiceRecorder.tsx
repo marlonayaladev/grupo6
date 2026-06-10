@@ -70,10 +70,11 @@ export default function MockVoiceRecorder({
       <button
         type="button"
         onClick={isActive ? stopRecording : startRecording}
+        style={state === 'GRABANDO' ? { animation: 'pulse-mic 1.5s ease-in-out infinite' } : undefined}
         className={`
           flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all duration-200
           ${state === 'GRABANDO'
-            ? 'bg-danger/20 border-danger animate-pulse'
+            ? 'bg-danger/20 border-danger'
             : state === 'PROCESANDO'
             ? 'bg-warning/20 border-warning'
             : 'bg-surface border-army hover:border-cyan/50'
