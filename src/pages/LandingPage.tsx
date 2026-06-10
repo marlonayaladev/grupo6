@@ -16,7 +16,7 @@ export default function LandingPage() {
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className="max-w-3xl w-full text-center mb-10 sm:mb-12"
         >
-          <img src="/logo.png" alt="Logo" className="mx-auto mb-8" style={{ width: 400, height: 600, objectFit: 'contain' }} />
+          <img src="/logo.png" alt="Logo" className="mx-auto mb-8" style={{ width: 450, height: 450, objectFit: 'contain' }} />
 
           <Link to="/generar" className="block text-center">
             <Button variant="primary" className="text-sm sm:text-base px-8 sm:px-10 py-3 sm:py-4">

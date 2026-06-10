@@ -86,7 +86,7 @@ export default function BibliotecaPage() {
   return (
     <div className="px-4 sm:px-6 py-8 sm:py-10">
       <div className="max-w-6xl mx-auto">
-        <SectionHeader title="Biblioteca de Gemelos Digitales" />
+        <SectionHeader title="Biblioteca de Gemelos Digitales — SICEP" />
 
         {/* Filtros */}
         <div className="mb-6 sm:mb-8 flex flex-col gap-3 sm:gap-4">

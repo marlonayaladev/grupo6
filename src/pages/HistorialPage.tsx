@@ -13,7 +13,7 @@ export default function HistorialPage() {
   return (
     <div className="px-4 sm:px-6 py-8 sm:py-10">
       <div className="max-w-6xl mx-auto">
-        <SectionHeader title="Historial de Simulaciones" />
+        <SectionHeader title="Historial de Simulaciones — SICEP" />
 
         {rows.length === 0 ? (
           <Card className="p-6 sm:p-8 text-center">

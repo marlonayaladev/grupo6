@@ -169,8 +169,8 @@ export function InformePDF({ datos, activos, amenazas, iniciativa, recomendacion
       <Page size="A4" style={s.page}>
         {/* Header */}
         <View style={s.header}>
-          <Text style={s.title}>Informe de Simulación</Text>
-          <Text style={s.subtitle}>Sandbox Institucional de Resiliencia Digital</Text>
+          <Text style={s.title}>Informe SICEP</Text>
+          <Text style={s.subtitle}>Simulador de Iniciativas de Ciberdefensa</Text>
           <Text style={[s.subtitle, { marginTop: 4 }]}>{fecha}</Text>
         </View>
 

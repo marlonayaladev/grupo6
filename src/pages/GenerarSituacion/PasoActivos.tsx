@@ -138,9 +138,9 @@ export default function PasoActivos() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <Button variant="ghost" onClick={() => navigate('/')}>
-          ← Retroceder
+          Retroceder
         </Button>
         <Button
           variant="primary"

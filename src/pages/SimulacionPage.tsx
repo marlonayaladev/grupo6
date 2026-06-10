@@ -13,9 +13,8 @@ import Button from '../components/ui/Button';
 import CargandoAnimado from '../components/ui/CargandoAnimado';
 import Card from '../components/ui/Card';
 
-const TIMING_NAC = [3000, 8000, 11000, 15000, 18000];
-const TIMING_INST = [22000, 25000, 29000, 32000];
-const TOTAL = 35000;
+const TIMING_NAC = [3000, 8000, 11000, 15000, 18000, 22000, 26000];
+const TIMING_INST = [30000, 33000, 36000, 39000, 42000, 45000, 48000];
 
 const cardIn = {
   hidden: { opacity: 0, scale: 0.85, y: 30 },
@@ -76,13 +75,13 @@ export default function SimulacionPage() {
     timers.push(setTimeout(() => setNacLoading(true), 2000));
     TIMING_NAC.forEach((t, i) => timers.push(setTimeout(() => { setNacLoading(false); setNacCount(i + 1); }, t)));
 
-    timers.push(setTimeout(() => setInstCargando(true), 20000));
-    timers.push(setTimeout(() => { setInstCargando(false); setInstLoading(true); }, 22000));
+    timers.push(setTimeout(() => setInstCargando(true), 28000));
+    timers.push(setTimeout(() => { setInstCargando(false); setInstLoading(true); }, 30000));
     TIMING_INST.forEach((t, i) => timers.push(setTimeout(() => { setInstLoading(false); setInstCount(i + 1); }, t)));
 
-    timers.push(setTimeout(() => setFichaCargando(true), 34000));
-    timers.push(setTimeout(() => { setFichaCargando(false); setFichaLoading(true); }, 36000));
-    timers.push(setTimeout(() => { setFichaLoading(false); setShowFicha(true); }, 37000));
+    timers.push(setTimeout(() => setFichaCargando(true), 50000));
+    timers.push(setTimeout(() => { setFichaCargando(false); setFichaLoading(true); }, 52000));
+    timers.push(setTimeout(() => { setFichaLoading(false); setShowFicha(true); }, 53000));
 
     generarRecomendacionesMock().then(setRecomendaciones);
     return () => timers.forEach(clearTimeout);
@@ -104,25 +103,31 @@ export default function SimulacionPage() {
 
   return (
     <div className="min-h-full text-textLight px-4 sm:px-10 py-8 sm:py-10">
-      <div className="flex items-center justify-end gap-3 mb-6">
-        <Link to="/"><Button variant="ghost">Volver al Inicio</Button></Link>
-        {showFicha && (
-          <PDFDownloadLink
-            document={<InformePDF datos={datos} activos={sim.activosSeleccionados} amenazas={sim.amenazas} iniciativa={sim.iniciativa} recomendaciones={recomendaciones} />}
-            fileName="Informe_Simulacion.pdf"
-          >
-            {({ loading: pdfLoading }) => (
-              <span className="inline-flex items-center gap-2 rounded-lg font-bold uppercase tracking-wider text-xs px-4 py-2 bg-cyan/15 text-cyan border border-cyan hover:bg-cyan/25 hover:shadow-[0_0_20px_rgba(0,212,255,0.3)] active:scale-95 transition-all duration-200 cursor-pointer">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="7 10 12 15 17 10" />
-                  <line x1="12" y1="15" x2="12" y2="3" />
-                </svg>
-                {pdfLoading ? 'Generando...' : 'Descargar PDF'}
-              </span>
-            )}
-          </PDFDownloadLink>
-        )}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+        <div>
+          <p className="text-[10px] text-textLight/40 uppercase tracking-widest">SICEP</p>
+          <h1 className="text-base sm:text-lg font-bold text-textLight uppercase tracking-wider">Simulacion en Curso</h1>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <Link to="/"><Button variant="ghost">Volver al Inicio</Button></Link>
+          {showFicha && (
+            <PDFDownloadLink
+              document={<InformePDF datos={datos} activos={sim.activosSeleccionados} amenazas={sim.amenazas} iniciativa={sim.iniciativa} recomendaciones={recomendaciones} />}
+              fileName="Informe_Simulacion.pdf"
+            >
+              {({ loading: pdfLoading }) => (
+                <span className="inline-flex items-center gap-2 rounded-lg font-bold uppercase tracking-wider text-xs px-4 py-2 bg-cyan/15 text-cyan border border-cyan hover:bg-cyan/25 hover:shadow-[0_0_20px_rgba(0,212,255,0.3)] active:scale-95 transition-all duration-200 cursor-pointer">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                  {pdfLoading ? 'Generando...' : 'Descargar PDF'}
+                </span>
+              )}
+            </PDFDownloadLink>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-6">
@@ -137,7 +142,9 @@ export default function SimulacionPage() {
                   showCurva={nacCount >= 2}
                   showRadar={nacCount >= 3}
                   showImpacto={nacCount >= 4}
-                  showIndicadores={nacCount >= 5}
+                  showMatriz={nacCount >= 5}
+                  showComparacion={nacCount >= 6}
+                  showMetricas={nacCount >= 7}
                 />
               </motion.div>
             ) : nacLoading ? (
@@ -170,9 +177,12 @@ export default function SimulacionPage() {
                 <PanelEfectoInstitucional
                   datos={datos}
                   showSemaforo={instCount >= 1}
-                  showCalor={instCount >= 2}
-                  showSerie={instCount >= 3}
-                  showMetricas={instCount >= 4}
+                  showConfianza={instCount >= 2}
+                  showDegradacion={instCount >= 3}
+                  showCalor={instCount >= 4}
+                  showRanking={instCount >= 5}
+                  showSerie={instCount >= 6}
+                  showMetricas={instCount >= 7}
                 />
               </motion.div>
             ) : instLoading ? (

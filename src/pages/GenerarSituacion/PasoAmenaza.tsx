@@ -96,18 +96,18 @@ export default function PasoAmenaza() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <SectionHeader title="Amenazas y Ámbito de Materialización" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+        <SectionHeader title="Amenazas y Ambito" />
         <div className="flex items-center gap-3">
           <Button variant="ghost" onClick={() => setPasoActual(2)}>
-            ← Retroceder
+            Retroceder
           </Button>
           <Button
             variant="primary"
             disabled={seleccionadas.size < 1}
             onClick={generarSimulacion}
           >
-            Generar Simulación
+            Generar Simulacion
           </Button>
         </div>
       </div>
@@ -252,20 +252,6 @@ export default function PasoAmenaza() {
             </Card>
           )}
         </div>
-      </div>
-
-      {/* Header buttons */}
-      <div className="flex items-center justify-between mb-8">
-        <Button variant="ghost" onClick={() => setPasoActual(2)}>
-          ← Retroceder
-        </Button>
-        <Button
-          variant="primary"
-          disabled={seleccionadas.size < 1}
-          onClick={generarSimulacion}
-        >
-          Generar Simulación
-        </Button>
       </div>
     </div>
   );
