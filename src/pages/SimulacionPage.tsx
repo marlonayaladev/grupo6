@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { PDFDownloadLink } from '@react-pdf/renderer';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useSimulacionStore } from '../store/simulacionStore';
 import { calcularResultados } from '../utils/simuladorMatematico';
 import { generarRecomendacionesMock } from '../utils/mockIA';
@@ -9,25 +10,34 @@ import PanelEfectoInstitucional from './Simulacion/PanelEfectoInstitucional';
 import PanelEfectoNacional from './Simulacion/PanelEfectoNacional';
 import FichaResultados from './Simulacion/FichaResultados';
 import Button from '../components/ui/Button';
+import CargandoAnimado from '../components/ui/CargandoAnimado';
+import Card from '../components/ui/Card';
 
-function GenerandoSkeleton({ titulo }: { titulo: string }) {
+const TIMING_NAC = [3000, 8000, 11000, 15000, 18000];
+const TIMING_INST = [22000, 25000, 29000, 32000];
+const TOTAL = 35000;
+
+const cardIn = {
+  hidden: { opacity: 0, scale: 0.85, y: 30 },
+  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+};
+
+function SkeletonCard({ texto }: { texto: string }) {
   return (
-    <div className="border border-army/40 rounded-xl p-6 sm:p-8 bg-surface/30">
-      <div className="flex items-center gap-3 mb-6">
+    <div className="border border-army/40 rounded-xl p-6 bg-surface/30">
+      <div className="flex items-center gap-3 mb-4">
         <div className="w-3 h-3 rounded-full bg-cyan/40 animate-pulse" />
         <span className="text-xs font-bold uppercase tracking-wider text-cyan/70">Generando...</span>
       </div>
-      <p className="text-sm text-textLight/30 uppercase tracking-wider mb-4">{titulo}</p>
-      <div className="space-y-3">
-        <div className="h-4 bg-army/20 rounded-lg w-3/4 animate-pulse" />
-        <div className="h-4 bg-army/20 rounded-lg w-1/2 animate-pulse" />
-        <div className="h-4 bg-army/20 rounded-lg w-2/3 animate-pulse" />
+      <p className="text-[10px] text-textLight/30 uppercase tracking-wider mb-3">{texto}</p>
+      <div className="space-y-2">
+        <div className="h-3 bg-army/20 rounded w-3/4 animate-pulse" />
+        <div className="h-3 bg-army/20 rounded w-1/2 animate-pulse" />
+        <div className="h-3 bg-army/20 rounded w-2/3 animate-pulse" />
       </div>
-      <div className="grid grid-cols-2 gap-3 mt-6">
-        <div className="h-20 bg-army/20 rounded-lg animate-pulse" />
-        <div className="h-20 bg-army/20 rounded-lg animate-pulse" />
-        <div className="h-20 bg-army/20 rounded-lg animate-pulse" />
-        <div className="h-20 bg-army/20 rounded-lg animate-pulse" />
+      <div className="grid grid-cols-2 gap-2 mt-4">
+        <div className="h-16 bg-army/20 rounded-lg animate-pulse" />
+        <div className="h-16 bg-army/20 rounded-lg animate-pulse" />
       </div>
     </div>
   );
@@ -37,55 +47,68 @@ export default function SimulacionPage() {
   const { id } = useParams<{ id: string }>();
   const { historial } = useSimulacionStore();
   const sim = historial.find((s) => s.id === id);
-  const [step, setStep] = useState(0);
   const [recomendaciones, setRecomendaciones] = useState<string[]>([]);
+  const [nacCount, setNacCount] = useState(0);
+  const [instCount, setInstCount] = useState(0);
+  const [nacCargando, setNacCargando] = useState(true);
+  const [nacLoading, setNacLoading] = useState(false);
+  const [instCargando, setInstCargando] = useState(false);
+  const [instLoading, setInstLoading] = useState(false);
+  const [fichaCargando, setFichaCargando] = useState(false);
+  const [showFicha, setShowFicha] = useState(false);
+  const [fichaLoading, setFichaLoading] = useState(false);
 
   useEffect(() => {
     if (!sim) return;
-    setStep(0);
+    setNacCount(0);
+    setInstCount(0);
+    setNacCargando(true);
+    setNacLoading(false);
+    setInstCargando(false);
+    setInstLoading(false);
+    setFichaCargando(false);
+    setFichaLoading(false);
+    setShowFicha(false);
 
-    const t1 = setTimeout(() => setStep(1), 6000);
-    const t2 = setTimeout(() => setStep(2), 12000);
-    const t3 = setTimeout(() => setStep(3), 18000);
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    timers.push(setTimeout(() => setNacCargando(false), 2000));
+    timers.push(setTimeout(() => setNacLoading(true), 2000));
+    TIMING_NAC.forEach((t, i) => timers.push(setTimeout(() => { setNacLoading(false); setNacCount(i + 1); }, t)));
+
+    timers.push(setTimeout(() => setInstCargando(true), 20000));
+    timers.push(setTimeout(() => { setInstCargando(false); setInstLoading(true); }, 22000));
+    TIMING_INST.forEach((t, i) => timers.push(setTimeout(() => { setInstLoading(false); setInstCount(i + 1); }, t)));
+
+    timers.push(setTimeout(() => setFichaCargando(true), 34000));
+    timers.push(setTimeout(() => { setFichaCargando(false); setFichaLoading(true); }, 36000));
+    timers.push(setTimeout(() => { setFichaLoading(false); setShowFicha(true); }, 37000));
 
     generarRecomendacionesMock().then(setRecomendaciones);
-
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    return () => timers.forEach(clearTimeout);
   }, [sim]);
 
   if (!sim) {
     return (
       <div className="px-4 sm:px-6 py-10">
         <div className="max-w-6xl mx-auto">
-          <Link to="/">
-            <Button variant="ghost">Volver al Inicio</Button>
-          </Link>
+          <Link to="/"><Button variant="ghost">Volver al Inicio</Button></Link>
         </div>
       </div>
     );
   }
 
-  const activos = sim.activosSeleccionados.map((a) => ({ nivel_criticidad: 4 }));
+  const activos = sim.activosSeleccionados.map(() => ({ nivel_criticidad: 4 }));
   const amenazas = sim.amenazas.map(() => ({ nivel_impacto_base: 3 }));
   const datos = calcularResultados(activos, sim.iniciativa, amenazas, sim.ambito);
 
   return (
     <div className="min-h-full text-textLight px-4 sm:px-10 py-8 sm:py-10">
       <div className="flex items-center justify-end gap-3 mb-6">
-        <Link to="/">
-          <Button variant="ghost">Volver al Inicio</Button>
-        </Link>
-        {step >= 3 && (
+        <Link to="/"><Button variant="ghost">Volver al Inicio</Button></Link>
+        {showFicha && (
           <PDFDownloadLink
-            document={
-              <InformePDF
-                datos={datos}
-                activos={sim.activosSeleccionados}
-                amenazas={sim.amenazas}
-                iniciativa={sim.iniciativa}
-                recomendaciones={recomendaciones}
-              />
-            }
+            document={<InformePDF datos={datos} activos={sim.activosSeleccionados} amenazas={sim.amenazas} iniciativa={sim.iniciativa} recomendaciones={recomendaciones} />}
             fileName="Informe_Simulacion.pdf"
           >
             {({ loading: pdfLoading }) => (
@@ -102,19 +125,37 @@ export default function SimulacionPage() {
         )}
       </div>
 
-      {/* Split: Nacional | Institucional */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-6">
         {/* Nacional */}
-        <div className="transition-opacity duration-700">
-          {step >= 1 ? (
-            <PanelEfectoNacional datos={datos} />
-          ) : (
-            <GenerandoSkeleton titulo="Efecto Nacional" />
-          )}
+        <div>
+          <AnimatePresence mode="wait">
+            {nacCount > 0 ? (
+              <motion.div key="nacional" layout variants={cardIn} initial="hidden" animate="visible">
+                <PanelEfectoNacional
+                  datos={datos}
+                  showMapa={nacCount >= 1}
+                  showCurva={nacCount >= 2}
+                  showRadar={nacCount >= 3}
+                  showImpacto={nacCount >= 4}
+                  showIndicadores={nacCount >= 5}
+                />
+              </motion.div>
+            ) : nacLoading ? (
+              <motion.div key="nac-skeleton" initial={{ opacity: 0, scale: 0.85, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.5 }}>
+                <SkeletonCard texto="Efecto Nacional" />
+              </motion.div>
+            ) : nacCargando ? (
+              <motion.div key="nac-cargando" initial={{ opacity: 0, scale: 0.85, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.5 }}>
+                <Card className="p-10 flex flex-col items-center justify-center min-h-[200px]">
+                  <CargandoAnimado texto="Generando Efecto Nacional..." />
+                </Card>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
         </div>
 
         {/* Separador */}
-        {step >= 2 && (
+        {(instCount > 0 || instLoading) && (
           <>
             <div className="hidden lg:block w-px bg-army/40 self-stretch" />
             <div className="block lg:hidden h-px bg-army/40 my-2" />
@@ -122,28 +163,52 @@ export default function SimulacionPage() {
         )}
 
         {/* Institucional */}
-        <div className="transition-opacity duration-700">
-          {step >= 2 ? (
-            <PanelEfectoInstitucional datos={datos} />
-          ) : (
-            <GenerandoSkeleton titulo="Efecto Institucional" />
-          )}
+        <div>
+          <AnimatePresence mode="wait">
+            {instCount > 0 ? (
+              <motion.div key="institucional" layout variants={cardIn} initial="hidden" animate="visible">
+                <PanelEfectoInstitucional
+                  datos={datos}
+                  showSemaforo={instCount >= 1}
+                  showCalor={instCount >= 2}
+                  showSerie={instCount >= 3}
+                  showMetricas={instCount >= 4}
+                />
+              </motion.div>
+            ) : instLoading ? (
+              <motion.div key="inst-skeleton" initial={{ opacity: 0, scale: 0.85, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.5 }}>
+                <SkeletonCard texto="Efecto Institucional" />
+              </motion.div>
+            ) : instCargando ? (
+              <motion.div key="inst-cargando" initial={{ opacity: 0, scale: 0.85, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.5 }}>
+                <Card className="p-10 flex flex-col items-center justify-center min-h-[200px]">
+                  <CargandoAnimado texto="Generando Efecto Institucional..." />
+                </Card>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
         </div>
       </div>
 
       {/* Ficha de Resultados */}
-      <div className="mt-8 transition-opacity duration-700">
-        {step >= 3 ? (
-          <FichaResultados
-            datos={datos}
-            activos={sim.activosSeleccionados}
-            amenazas={sim.amenazas}
-            iniciativa={sim.iniciativa}
-            recomendaciones={recomendaciones}
-          />
-        ) : (
-          <GenerandoSkeleton titulo="Ficha de Resultados" />
-        )}
+      <div className="mt-8">
+        <AnimatePresence mode="wait">
+          {showFicha ? (
+            <motion.div key="ficha" layout variants={cardIn} initial="hidden" animate="visible">
+              <FichaResultados datos={datos} activos={sim.activosSeleccionados} amenazas={sim.amenazas} iniciativa={sim.iniciativa} recomendaciones={recomendaciones} />
+            </motion.div>
+          ) : fichaLoading ? (
+            <motion.div key="ficha-skeleton" initial={{ opacity: 0, scale: 0.85, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.5 }}>
+              <SkeletonCard texto="Ficha de Resultados" />
+            </motion.div>
+          ) : fichaCargando ? (
+            <motion.div key="ficha-cargando" initial={{ opacity: 0, scale: 0.85, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.5 }}>
+              <Card className="p-10 flex flex-col items-center justify-center min-h-[200px]">
+                <CargandoAnimado texto="Generando Ficha de Resultados..." />
+              </Card>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </div>
     </div>
   );
